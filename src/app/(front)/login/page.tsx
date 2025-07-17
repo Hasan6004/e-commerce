@@ -1,8 +1,11 @@
+import LoginForm from "./LoginForm";
 
-const page = () => {
+const Login = () => {
   return (
-    <div>Login</div>
-  )
-}
+    <main>
+      <LoginForm />
+    </main>
+  );
+};
 
-export default page
+export default Login;
