@@ -8,8 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { baseButton } from "@/styles/buttonStyles";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +28,7 @@ const LoginForm = () => {
     toast.success("خوش آمدید", {
       className: "font-vazir text-[16px] mt-10",
     });
+    router.push("/home");
   };
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)}>

@@ -7,7 +7,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col justify-center items-center p-6 border-2 rounded-lg border-black bg-[#fcfcfc]">
+      <div className="flex flex-col justify-center items-center p-6 border-2 rounded-lg border-black ">
         {children}
         <Toaster position="top-center" />
       </div>
