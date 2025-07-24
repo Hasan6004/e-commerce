@@ -4,9 +4,6 @@ import Link from "next/link";
 import { IoPersonOutline } from "react-icons/io5";
 import { GrCart } from "react-icons/gr";
 import { IoSearchOutline } from "react-icons/io5";
-import { MdOutlineCategory } from "react-icons/md";
-import { MdOutlineHome } from "react-icons/md";
-import { MdOutlineLibraryBooks } from "react-icons/md";
 import { mobileLinks } from "@/lib/constants/mobileLinks";
 import { useState } from "react";
 
@@ -76,7 +73,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
-      <div className="md:hidden fixed bottom-0 left-0 right-0 flex flex-row justify-between items-center">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
           if (item.type === userType)
             return (
@@ -101,36 +98,6 @@ const Navbar = () => {
               </div>
             );
         })}
-        {/* <div className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1">
-          <IoPersonOutline className="cursor-pointer text-[#8c8c8c] w-[25px] h-[25px]" />
-          <Link href={"/"} className="font-vazir text-[14px]">
-            حساب من
-          </Link>
-        </div>
-        <div className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1">
-          <MdOutlineLibraryBooks className="text-[#8c8c8c] cursor-pointer w-[25px] h-[25px]" />
-          <Link href={"/"} className="font-vazir text-[14px]">
-            سفارشات
-          </Link>
-        </div>
-        <div className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1">
-          <GrCart className="text-[#8c8c8c] cursor-pointer w-[24px] h-[24px]" />
-          <Link href={"/"} className="font-vazir text-[14px]">
-            سبد خرید
-          </Link>
-        </div>
-        <div className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1">
-          <MdOutlineCategory className="text-[#8c8c8c] cursor-pointer w-[28px] h-[28px]" />
-          <Link href={"/"} className="font-vazir text-[14px]">
-            دسته‌بندی
-          </Link>
-        </div>
-        <div className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1">
-          <MdOutlineHome className="text-[#8c8c8c] cursor-pointer w-[28px] h-[28px]" />
-          <Link href={"/home"} className="font-vazir text-[14px] font-bold">
-            خانه
-          </Link>
-        </div> */}
       </div>
     </nav>
   );
