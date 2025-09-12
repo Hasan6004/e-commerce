@@ -4,8 +4,8 @@ type imageArr = {
 };
 
 export const heroImages: imageArr[] = [
-  { id: "tech", img: "/tech.jpg" },
-  { id: "books", img: "/books.jpg" },
-  { id: "clothes", img: "/clothes.jpg" },
-  { id: "home", img: "/appliances.jpg" },
+  { id: "tech", img: "/images/tech.jpg" },
+  { id: "books", img: "/images/books.jpg" },
+  { id: "clothes", img: "/images/clothes.jpg" },
+  { id: "home", img: "/images/appliances.jpg" },
 ];

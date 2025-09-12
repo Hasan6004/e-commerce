@@ -88,7 +88,7 @@ const Footer = () => {
               <Image
                 width={60}
                 height={60}
-                src="/zoodbuy_logo.png"
+                src="/images/zoodbuy_logo.png"
                 alt="Logo"
                 className="lg:w-[75px] w[60px] lg:h-[75px] h-[60px] cursor-pointer"
               />

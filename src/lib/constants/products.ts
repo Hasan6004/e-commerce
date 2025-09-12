@@ -11,7 +11,7 @@ const products: productType[] = [
     color: "black",
     category: "موبایل",
     href: "#",
-    imageSrc: "/redmi_note13.jpg",
+    imageSrc: "/images/redmi_note13.jpg",
     description:
       "گوشی شیائومی ردمی نوت 13 با طراحی مدرن و صفحه‌نمایش AMOLED کیفیت تصویری عالی ارائه می‌دهد. پردازنده قدرتمند و باتری پرظرفیت این گوشی را به گزینه‌ای مناسب برای استفاده روزمره و حتی اجرای بازی‌ها تبدیل کرده است. دوربین چندگانه آن نیز امکان ثبت تصاویر با جزئیات بالا را فراهم می‌کند.",
     specs: {
@@ -31,7 +31,7 @@ const products: productType[] = [
     inStock: 34,
     category: "کتاب",
     href: "#",
-    imageSrc: "/habit_power_book.jpg",
+    imageSrc: "/images/habit_power_book.jpg",
     description:
       "کتاب قدرت عادت نوشته چارلز دوهیگ از پرفروش‌ترین آثار حوزه روانشناسی و موفقیت است. این کتاب به بررسی نحوه شکل‌گیری عادت‌ها و راهکارهای تغییر آن‌ها می‌پردازد و با مثال‌های واقعی، آن را به راهنمایی کاربردی برای زندگی شخصی و کاری تبدیل کرده است.",
     specs: {
@@ -52,7 +52,7 @@ const products: productType[] = [
     color: "blue",
     category: "لپ تاپ",
     href: "#",
-    imageSrc: "/lenovo_ideapad3.jpg",
+    imageSrc: "/images/lenovo_ideapad3.jpg",
     description:
       "لپ‌تاپ لنوو IdeaPad 3 با طراحی سبک و باریک انتخابی مناسب برای دانشجویان و استفاده روزانه است. این دستگاه با پردازنده Core i7 و رم 32 گیگابایت عملکرد روانی در اجرای برنامه‌ها ارائه می‌دهد. نمایشگر Full HD نیز کیفیت مطلوبی برای فیلم و کارهای گرافیکی سبک دارد.",
     specs: {
@@ -73,7 +73,7 @@ const products: productType[] = [
     color: "blue",
     category: "لباس",
     href: "#",
-    imageSrc: "/men_hoodie.jpg",
+    imageSrc: "/images/men_hoodie.jpg",
     description:
       "هودی مردانه پاییزه با پارچه نرم و راحت انتخابی مناسب برای روزهای خنک است. طراحی اسپرت و رنگ‌بندی جذاب آن برای استفاده روزمره و جمع‌های دوستانه بسیار کاربردی است. وجود کلاه و جیب کانگورویی راحتی بیشتری به آن بخشیده است.",
     specs: {
@@ -94,7 +94,7 @@ const products: productType[] = [
     color: "white",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/QCY_T13_ANC.jpeg",
+    imageSrc: "/images/QCY_T13_ANC.jpeg",
     description:
       "هدفون بی‌سیم QCY T13 با طراحی ارگونومیک و باتری قدرتمند گزینه‌ای عالی برای استفاده روزمره است. این هدفون کیفیت صدای بالا و قابلیت حذف نویز دارد و تجربه‌ای لذت‌بخش در گوش دادن به موسیقی و مکالمه ارائه می‌دهد. کنترل لمسی استفاده از آن را آسان کرده است.",
     specs: {
@@ -115,7 +115,7 @@ const products: productType[] = [
     color: "gray",
     category: "لوازم خانگی",
     href: "#",
-    imageSrc: "/microwave.jpg",
+    imageSrc: "/images/microwave.jpg",
     description:
       "مایکروویو پاناسونیک مدل NN-ST34 با طراحی مدرن و قابلیت‌های متنوع گزینه‌ای مناسب برای آشپزخانه‌های امروزی است. توان بالا و برنامه‌های مختلف پخت باعث تسهیل در آشپزی می‌شود. قابلیت یخ‌زدایی سریع و مصرف انرژی بهینه نیز از ویژگی‌های مهم آن است.",
     specs: {
@@ -136,7 +136,7 @@ const products: productType[] = [
     color: "gray",
     category: "لباس",
     href: "#",
-    imageSrc: "/running_shoes.jpg",
+    imageSrc: "/images/running_shoes.jpg",
     description:
       "کفش کتانی رانینگ مردانه با طراحی سبک و انعطاف‌پذیر انتخابی عالی برای پیاده‌روی و دویدن است. کفی نرم و سیستم تهویه مناسب، پا را خشک و راحت نگه می‌دارد. رنگ‌بندی متنوع آن نیز ظاهری اسپرت و شیک به همراه دارد.",
     specs: {
@@ -157,7 +157,7 @@ const products: productType[] = [
     color: "green",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/white-smart-watch.jpg",
+    imageSrc: "/images/white-smart-watch.jpg",
     description:
       "ساعت هوشمند Amazfit Bip U با طراحی سبک و امکانات سلامتی گزینه‌ای مناسب برای استفاده روزمره است. این ساعت دارای سنسور اکسیژن خون، پایش خواب و ضربان قلب بوده و باتری آن امکان استفاده طولانی‌مدت را فراهم می‌کند.",
     specs: {
@@ -177,7 +177,7 @@ const products: productType[] = [
     inStock: 50,
     category: "کتاب",
     href: "#",
-    imageSrc: "/asar_morakab.jpg",
+    imageSrc: "/images/asar_morakab.jpg",
     description:
       "کتاب اثر مرکب نوشته دارن هاردی از کتاب‌های تأثیرگذار در زمینه موفقیت فردی و حرفه‌ای است. این کتاب نشان می‌دهد که چگونه اقدامات کوچک و مداوم می‌توانند منجر به تغییرات بزرگ در زندگی شوند. متن روان و ساده آن برای همه خوانندگان مناسب است.",
     specs: {
@@ -198,7 +198,7 @@ const products: productType[] = [
     color: "black",
     category: "لوازم خانگی",
     href: "#",
-    imageSrc: "/bosch.jpg",
+    imageSrc: "/images/bosch.jpg",
     description:
       "جارو شارژی بوش مدل BHN14N با طراحی جمع‌وجور و قدرت مکش بالا انتخابی مناسب برای نظافت سریع خانه و خودرو است. باتری قابل شارژ آن دوام بالایی دارد و فیلتر قابل شستشو و مخزن جداشونده از مزایای این محصول هستند.",
     specs: {
@@ -219,7 +219,7 @@ const products: productType[] = [
     color: "silver",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/ipad.jpeg",
+    imageSrc: "/images/ipad.jpeg",
     description:
       "آیپد نسل دهم اپل با نمایشگر Liquid Retina و پردازنده قدرتمند A14 Bionic گزینه‌ای عالی برای دانشجویان و طراحان است. پشتیبانی از Apple Pencil و کیبورد مجزا، این تبلت را به یک ابزار کامل برای کار و سرگرمی تبدیل می‌کند.",
     specs: {
@@ -240,7 +240,7 @@ const products: productType[] = [
     color: "black",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/sony_camera.jpg",
+    imageSrc: "/images/sony_camera.jpg",
     description:
       "دوربین بدون آینه سونی Alpha a6400 با سنسور APS-C و قابلیت فوکوس خودکار بسیار سریع انتخابی عالی برای عکاسان حرفه‌ای و نیمه‌حرفه‌ای است. فیلم‌برداری 4K و صفحه‌نمایش لمسی چرخان از ویژگی‌های برجسته آن است.",
     specs: {
@@ -261,7 +261,7 @@ const products: productType[] = [
     color: "white",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/hp_printer.webp",
+    imageSrc: "/images/hp_printer.webp",
     description:
       "پرینتر لیزری اچ‌پی مدل M15w یکی از کوچک‌ترین پرینترهای لیزری دنیاست. اتصال بی‌سیم و سرعت چاپ بالا آن را برای دفاتر کوچک و استفاده خانگی بسیار مناسب کرده است.",
     specs: {
@@ -282,7 +282,7 @@ const products: productType[] = [
     color: "black",
     category: "لوازم خانگی",
     href: "#",
-    imageSrc: "/samsung_tv.jpg",
+    imageSrc: "/images/samsung_tv.jpg",
     description:
       "تلویزیون سامسونگ 55 اینچ UHD با کیفیت تصویر 4K و فناوری HDR تصویری شفاف و زنده ارائه می‌دهد. سیستم عامل هوشمند آن امکان دسترسی به اپلیکیشن‌ها و اینترنت را فراهم می‌کند.",
     specs: {
@@ -303,7 +303,7 @@ const products: productType[] = [
     color: "white",
     category: "لباس",
     href: "#",
-    imageSrc: "/nike_airzoom.webp",
+    imageSrc: "/images/nike_airzoom.webp",
     description:
       "کفش ورزشی نایک Air Zoom با طراحی مدرن و فناوری‌های روز دنیا انتخابی ایده‌آل برای ورزشکاران حرفه‌ای است. کفی نرم و مقاوم و رویه سبک، راحتی و عملکرد عالی در دویدن ایجاد می‌کند.",
     specs: {
@@ -324,7 +324,7 @@ const products: productType[] = [
     color: "black",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/asus_monitor.jpg",
+    imageSrc: "/images/asus_monitor.jpg",
     description:
       "مانیتور ایسوس ProArt 27 با دقت رنگ بالا و وضوح QHD انتخابی مناسب برای طراحان گرافیک و ادیتورهای ویدئو است. قابلیت تنظیم ارتفاع و چرخش صفحه برای کارهای حرفه‌ای بهینه‌سازی شده است.",
     specs: {
@@ -345,7 +345,7 @@ const products: productType[] = [
     color: "pink",
     category: "لوازم دیجیتال",
     href: "#",
-    imageSrc: "/canon_zoemini.jpeg",
+    imageSrc: "/images/canon_zoemini.jpeg",
     description:
       "دوربین چاپ فوری کانن Zoemini با طراحی کوچک و قابلیت چاپ عکس در لحظه انتخابی مناسب برای سفرها و دورهمی‌ها است. این دوربین بدون نیاز به جوهر کار می‌کند و چاپ‌های باکیفیتی ارائه می‌دهد.",
     specs: {
@@ -366,7 +366,7 @@ const products: productType[] = [
     color: "white",
     category: "لوازم خانگی",
     href: "#",
-    imageSrc: "/samsung_wash.jpg",
+    imageSrc: "/images/samsung_wash.jpg",
     description:
       "ماشین لباسشویی 9 کیلویی سامسونگ با موتور دیجیتال اینورتر و قابلیت شست‌وشوی سریع انتخابی عالی برای خانواده‌های پرجمعیت است. طراحی مدرن و مصرف انرژی پایین از دیگر ویژگی‌های آن است.",
     specs: {
@@ -387,7 +387,7 @@ const products: productType[] = [
     color: "white",
     category: "لوازم خانگی",
     href: "#",
-    imageSrc: "/rice_cooker.webp",
+    imageSrc: "/images/rice_cooker.webp",
     description:
       "پلوپز پارس خزر مدل RC181 با ظرفیت 8 نفره و توان 620 وات برای پخت برنج ایرانی عالی است. دارای تایمر و کلید تنظیم پخت است و بدنه آن از جنس پلاستیک فشرده و مقاوم ساخته شده است.",
     specs: {
@@ -408,7 +408,7 @@ const products: productType[] = [
     color: "black",
     category: "لباس",
     href: "#",
-    imageSrc: "/men_jacket.jpg",
+    imageSrc: "/images/men_jacket.jpg",
     description:
       "کاپشن مردانه زمستانی ضدآب با عایق حرارتی مناسب برای روزهای سرد و بارانی طراحی شده است. دارای کلاه جداشونده و جیب‌های متعدد برای راحتی بیشتر است.",
     specs: {
