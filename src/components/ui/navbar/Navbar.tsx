@@ -18,7 +18,6 @@ const Navbar = () => {
     "general"
   );
 
-  const [isActive, setIsActive] = useState<string>("home");
   const [toggleAccountLinks, setToggleAccountLinks] = useState<boolean>(false);
   const accountLinksRef = useRef<HTMLDivElement>(null);
 
@@ -174,25 +173,20 @@ const Navbar = () => {
       <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
+          const isActive = pathname === item.href;
           if (item.type === userType)
             return (
-              <ul
-                key={item.href}
-                className="cursor-pointer flex-1"
-                onClick={() => setIsActive(item.name)}
-              >
+              <ul key={item.href} className="cursor-pointer flex-1">
                 {/* We don't have a specific route for the category, and we show them on the same page in an overlay */}
                 <Link
                   href={item.name !== "account" ? item.href : "/auth/login"}
-                  className={`font-vazir ${
-                    isActive === item.name && "font-bold"
-                  } text-[14px]
+                  className={`font-vazir ${isActive && "font-bold"} text-[14px]
                    flex flex-col items-center justify-center gap-1
                   `}
                 >
                   <item.icon
                     className={`cursor-pointer ${
-                      isActive === item.name ? "text-black" : "text-[#8c8c8c]"
+                      isActive ? "text-black" : "text-[#8c8c8c]"
                     } w-[25px] h-[25px]`}
                   />
                   {item.text}

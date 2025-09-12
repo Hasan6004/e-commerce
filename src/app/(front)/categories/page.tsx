@@ -11,7 +11,7 @@ const Categories = () => {
         {categories.map((cat, i) => (
           <Link
             key={i}
-            href={`/products/${encodeURIComponent(cat.enCategory)}`}
+            href={`/category/${encodeURIComponent(cat.enCategory)}`}
           >
             <li className="px-4 py-2 hover:bg-gray-100 text-right text-gray-700 cursor-pointer font-vazir">
               {cat.category}

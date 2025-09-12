@@ -14,7 +14,7 @@ const Categories = () => {
             return (
               <Link
                 key={cat.category}
-                href={`/products/${encodeURIComponent(cat.enCategory)}`}
+                href={`/category/${encodeURIComponent(cat.enCategory)}`}
               >
                 <div className="flex flex-col items-center sm:gap-3 md:gap-5 gap-2 p-5">
                   <Image
