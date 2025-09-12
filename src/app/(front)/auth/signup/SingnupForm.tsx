@@ -12,6 +12,7 @@ import StepIndicator from "./StepIndicator";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { MdOutlineArrowForward } from "react-icons/md";
 
 const SingnupForm = () => {
   const [step, setStep] = useState<1 | 2>(1);
@@ -38,7 +39,7 @@ const SingnupForm = () => {
   const handleSignupSubmit = async (data: FormData) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log(data);
-    router.push("/login");
+    router.push("/auth/login");
     toast.success("ثبت نام با موفقیت انجام شد", {
       className: "font-vazir text-[16px] mt-10",
     });
@@ -49,6 +50,11 @@ const SingnupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(handleSignupSubmit)}>
+      <div className="flex flex-row justify-end">
+        <Link href={"/home"}>
+          <MdOutlineArrowForward size={24} className="cursor-pointer" />
+        </Link>
+      </div>
       <div>
         <StepIndicator step={step} isSubmitted={isSubmitted} />
       </div>
@@ -88,7 +94,7 @@ const SingnupForm = () => {
               </button>
               <div className="mt-5">
                 <Link
-                  href={"/login"}
+                  href={"/auth/login"}
                   className="font-vazir font-bold sm:text-[14px] text-[12px]"
                 >
                   از قبل حساب دارید؟

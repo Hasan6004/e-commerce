@@ -15,7 +15,7 @@ type navLinks = {
 
 export const mobileLinks: navLinks[] = [
   {
-    href: "/adminPanel",
+    href: "/admin",
     name: "adminPanel",
     icon: MdOutlineAdminPanelSettings,
     type: "admin",
@@ -43,7 +43,7 @@ export const mobileLinks: navLinks[] = [
     text: "سبد خرید",
   },
   {
-    href: "/categoties",
+    href: "/categories",
     name: "category",
     icon: MdOutlineCategory,
     type: "general",

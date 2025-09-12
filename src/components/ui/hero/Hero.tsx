@@ -1,6 +1,8 @@
 import { baseButton } from "@/styles/buttonStyles";
 import Slider from "../../features/Slider";
 import { heroImages } from "@/lib/constants/heroImages";
+import Link from "next/link";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -9,11 +11,13 @@ const Hero = () => {
         <div className="relative sm:flex-1">
           <Slider>
             {heroImages.map((item) => (
-              <img
+              <Image
+                width={300}
+                height={300}
                 key={item.id}
                 src={item.img}
                 alt="image"
-                className="w-full sm:h-[80vh] h-[60vh]"
+                className="w-full sm:h-[80vh] h-[60vh] object-cover"
               />
             ))}
           </Slider>
@@ -24,11 +28,13 @@ const Hero = () => {
             <br />
             <span className="">با خیال راحت خرید کن</span>
           </h1>
-          <button
-            className={`${baseButton} md:text-[24px] sm:text-[22px] text-[20px] mt-5 md:mt-10`}
-          >
-            مشاهده محصولات
-          </button>
+          <Link href={{ pathname: "/products", query: { from: "all" } }}>
+            <button
+              className={`${baseButton} md:text-[24px] sm:text-[22px] text-[20px] mt-5 md:mt-10`}
+            >
+              مشاهده محصولات
+            </button>
+          </Link>
         </div>
       </div>
     </>

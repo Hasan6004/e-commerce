@@ -9,6 +9,7 @@ import { baseButton } from "@/styles/buttonStyles";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { MdOutlineArrowForward } from "react-icons/md";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -32,6 +33,11 @@ const LoginForm = () => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)}>
+      <div className="flex flex-row justify-end">
+        <Link href={"/home"}>
+          <MdOutlineArrowForward size={24} className="cursor-pointer" />
+        </Link>
+      </div>
       <h2 className="text-center font-vazir text-2xl font-bold my-5">ورود</h2>
       <div className="flex flex-col justify-center items-center">
         <div className="flex flex-col text-right gap-2 mb-8">
@@ -54,12 +60,12 @@ const LoginForm = () => {
         </div>
         <div>
           <button type="submit" disabled={isSubmitting} className={baseButton}>
-            {isSubmitting ? "در حال انجام" : "ثبت نام"}
+            {isSubmitting ? "در حال انجام" : "ورود"}
           </button>
         </div>
         <div className="mt-5">
           <Link
-            href={"/signup"}
+            href={"/auth/signup"}
             className="font-vazir font-bold sm:text-[14px] text-[12px]"
           >
             از قبل حساب ندارید؟

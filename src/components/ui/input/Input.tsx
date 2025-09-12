@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={id}
           className={`bg-white border-1 rounded-lg ${
             error ? "border-red-500" : "border-[#b0b0b0]"
-          } p-1 outline-black text-right font-vazir pr-2 text-[14px] sm:text-[16px] sm:w-xs`}
+          } p-1 outline-black text-right font-vazir pr-2 text-[14px] sm:text-[16px] sm:w-[320px] w-[250px]`}
           {...rest}
         />
         {error && (

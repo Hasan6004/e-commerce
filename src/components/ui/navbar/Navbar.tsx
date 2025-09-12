@@ -3,28 +3,105 @@
 import Link from "next/link";
 import { IoPersonOutline } from "react-icons/io5";
 import { GrCart } from "react-icons/gr";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { mobileLinks } from "@/lib/constants/mobileLinks";
-import { useState } from "react";
+import { categories } from "@/lib/constants/categories";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { accountLinks } from "@/lib/constants/accountLinks";
+import Image from "next/image";
 
 const Navbar = () => {
   const [userType, setUserType] = useState<"general" | "loggedIn" | "admin">(
     "general"
   );
+
   const [isActive, setIsActive] = useState<string>("home");
-  return (
+  const [toggleAccountLinks, setToggleAccountLinks] = useState<boolean>(false);
+  const accountLinksRef = useRef<HTMLDivElement>(null);
+
+  // Close when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        accountLinksRef.current &&
+        !accountLinksRef.current.contains(event.target as Node)
+      ) {
+        setToggleAccountLinks(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const pathname = usePathname();
+  const showNavbar = !pathname?.startsWith("/auth");
+  return !showNavbar ? null : (
     <nav className="lg:px-10 px-5 py-5">
-      <div className=" flex flex-row justify-between items-center">
+      <div className=" flex flex-row justify-between items-center relative">
         <div className="flex-6 md:flex-1 flex justify-baseline items-center">
           <div className="hidden md:flex justify-center items-center gap-[0.5px]">
             <span className="font-vazir font-medium lg:text-[16px] text-[14px]">
               0
             </span>
-            <GrCart className="text-[#8c8c8c] cursor-pointer hover:text-black lg:w-[28px] lg:h-[28px] w-[20px] h-[20px]" />
+            <Link href={"/cart"}>
+              <GrCart className="text-[#8c8c8c] cursor-pointer hover:text-black lg:w-[28px] lg:h-[28px] w-[20px] h-[20px]" />
+            </Link>
           </div>
-          <div className="lg:ml-5 ml-3 hidden md:block">
-            <IoPersonOutline className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]" />
+          <div
+            ref={accountLinksRef}
+            className="lg:ml-5 ml-3 hidden md:block relative"
+          >
+            {/* The user state (logged-in or not) needs to be checked here */}
+            {false && (
+              <IoPersonOutline
+                className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]"
+                onClick={() => setToggleAccountLinks(!toggleAccountLinks)}
+              />
+            )}
+            {true ? (
+              <Link href={"/auth/login"}>
+                <IoPersonOutline className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]" />
+              </Link>
+            ) : (
+              toggleAccountLinks && (
+                <div className="absolute top-full left-0 bg-white shadow-md border rounded-md min-w-[180px] z-50">
+                  <ul className="flex flex-col">
+                    <Link href={"/profile"}>
+                      <div
+                        className="flex flex-row justify-between items-center p-3 hover:bg-gray-300
+                    "
+                      >
+                        <MdOutlineKeyboardArrowLeft />
+                        {/* Should be the user name */}
+                        <p>حسن بوغنیمه</p>
+                      </div>
+                      <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
+                    </Link>
+                    {accountLinks.map((item, index) => {
+                      return (
+                        <Link href={item.href} key={item.name}>
+                          <div className="flex flex-row justify-end items-center gap-3 p-3 hover:bg-gray-300">
+                            <p>{item.text}</p>
+                            <item.icon className="w-[21px] h-[21px]" />
+                          </div>
+                          {index !== accountLinks.length - 1 && (
+                            <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )
+            )}
           </div>
+
           <div className="lg:ml-5 ml-3 relative w-full">
             <div>
               <input
@@ -39,11 +116,11 @@ const Navbar = () => {
         <ul className="hidden md:flex flex-row justify-center items-center lg:gap-5 gap-3 flex-3">
           {userType === "general" && (
             <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-              <Link href={"/"}>تماس با ما</Link>
+              <Link href={"/contact"}>تماس با ما</Link>
             </li>
           )}
           <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-            <Link href={"/"}>درباره</Link>
+            <Link href={"/about"}>درباره</Link>
           </li>
           {userType === "admin" && (
             <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
@@ -55,8 +132,27 @@ const Navbar = () => {
               <Link href={"/orders"}>سفارشات</Link>
             </li>
           )}
-          <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-            <Link href={"/products"}>دسته‌بندی</Link>
+          <li
+            className={`font-vazir lg:text-[18px] text-[16px] flex flex-col items-center justify-center cursor-pointer relative group`}
+          >
+            <div className="flex flex-row justify-center items-center hover:font-bold">
+              <MdOutlineKeyboardArrowDown />
+              <span>دسته‌بندی</span>
+            </div>
+            <ul
+              className={`absolute right-0 top-full bg-white shadow-md border rounded-md mt-0  min-w-[180px] z-50 hidden group-hover:block`}
+            >
+              {categories.map((cat, i) => (
+                <Link
+                  key={i}
+                  href={`/category/${encodeURIComponent(cat.enCategory)}`}
+                >
+                  <li className="px-4 py-2 hover:bg-gray-100 text-right text-gray-700 cursor-pointer font-vazir">
+                    {cat.category}
+                  </li>
+                </Link>
+              ))}
+            </ul>
           </li>
           <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
             <Link href={"/home"}>خانه</Link>
@@ -64,38 +160,44 @@ const Navbar = () => {
         </ul>
         <div className="flex-1 flex items-center justify-end">
           <a href="#">
-            <img
-              src="./zoodbuy_logo.png"
+            <Image
+              width={60}
+              height={60}
+              src="/zoodbuy_logo.png"
               alt="Logo"
               className="lg:w-[75px] w[60px] lg:h-[75px] h-[60px] cursor-pointer"
             />
           </a>
         </div>
       </div>
+
       <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
           if (item.type === userType)
             return (
-              <div
+              <ul
                 key={item.href}
-                className="cursor-pointer flex-1 flex flex-col items-center justify-center gap-1"
+                className="cursor-pointer flex-1"
                 onClick={() => setIsActive(item.name)}
               >
-                <item.icon
-                  className={`cursor-pointer ${
-                    isActive === item.name ? "text-black" : "text-[#8c8c8c]"
-                  } w-[25px] h-[25px]`}
-                />
+                {/* We don't have a specific route for the category, and we show them on the same page in an overlay */}
                 <Link
-                  href={item.href}
+                  href={item.name !== "account" ? item.href : "/auth/login"}
                   className={`font-vazir ${
                     isActive === item.name && "font-bold"
-                  } text-[14px]`}
+                  } text-[14px]
+                   flex flex-col items-center justify-center gap-1
+                  `}
                 >
+                  <item.icon
+                    className={`cursor-pointer ${
+                      isActive === item.name ? "text-black" : "text-[#8c8c8c]"
+                    } w-[25px] h-[25px]`}
+                  />
                   {item.text}
                 </Link>
-              </div>
+              </ul>
             );
         })}
       </div>
