@@ -1,5 +1,3 @@
-import { Toaster } from "react-hot-toast";
-
 export default function AuthLayout({
   children,
 }: {
@@ -9,7 +7,6 @@ export default function AuthLayout({
     <div className="flex justify-center items-center h-screen">
       <div className="flex flex-col justify-center items-center p-6 border-2 rounded-lg border-black ">
         {children}
-        <Toaster position="top-center" />
       </div>
     </div>
   );

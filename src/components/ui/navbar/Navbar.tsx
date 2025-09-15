@@ -12,6 +12,8 @@ import { usePathname } from "next/navigation";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { accountLinks } from "@/lib/constants/accountLinks";
 import Image from "next/image";
+import { RootState } from "@/lib/redux/store";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [userType, setUserType] = useState<"general" | "loggedIn" | "admin">(
@@ -20,6 +22,8 @@ const Navbar = () => {
 
   const [toggleAccountLinks, setToggleAccountLinks] = useState<boolean>(false);
   const accountLinksRef = useRef<HTMLDivElement>(null);
+
+  const cartItemsNumber = useSelector((state: RootState) => state.cart);
 
   // Close when clicking outside
   useEffect(() => {
@@ -46,7 +50,7 @@ const Navbar = () => {
         <div className="flex-6 md:flex-1 flex justify-baseline items-center">
           <div className="hidden md:flex justify-center items-center gap-[0.5px]">
             <span className="font-vazir font-medium lg:text-[16px] text-[14px]">
-              0
+              {cartItemsNumber?.length}
             </span>
             <Link href={"/cart"}>
               <GrCart className="text-[#8c8c8c] cursor-pointer hover:text-black lg:w-[28px] lg:h-[28px] w-[20px] h-[20px]" />

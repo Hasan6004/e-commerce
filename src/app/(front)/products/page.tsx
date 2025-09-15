@@ -175,7 +175,7 @@ export default function Products({
             {filteredProducts?.map((product) => (
               <Link
                 key={product.id}
-                href={`products/${product.id}`}
+                href={`/products/${product.id}`}
                 className="group"
               >
                 <div className="relative">

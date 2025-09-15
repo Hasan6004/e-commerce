@@ -7,7 +7,7 @@ const products: productType[] = [
     name: "گوشی شیائومی Redmi Note 13",
     price: "16500000",
     discountPercent: 10,
-    inStock: 0,
+    inStock: 4,
     color: "black",
     category: "موبایل",
     href: "#",

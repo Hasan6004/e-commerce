@@ -6,6 +6,8 @@ import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
 import Image from "next/image";
 import { useState } from "react";
+import { addToCart } from "@/lib/redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -31,6 +33,8 @@ export default function ProductDetailsPage({ params }: Props) {
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
     "description"
   );
+
+  const dispatch = useDispatch();
 
   if (!product) return <p>محصولی یافت نشد</p>;
 
@@ -154,7 +158,22 @@ export default function ProductDetailsPage({ params }: Props) {
 
               {/* Add to cart */}
               <div className="mt-10 text-center">
-                <button type="button" className={`${baseButton} px-15`}>
+                <button
+                  type="button"
+                  className={`${baseButton} px-15`}
+                  onClick={() =>
+                    dispatch(
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1,
+                        image: product.imageSrc,
+                        discountPercent: product.discountPercent,
+                      })
+                    )
+                  }
+                >
                   افزودن به سبد خرید
                 </button>
               </div>
