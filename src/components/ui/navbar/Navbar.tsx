@@ -7,17 +7,24 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { mobileLinks } from "@/lib/constants/mobileLinks";
 import { categories } from "@/lib/constants/categories";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { accountLinks } from "@/lib/constants/accountLinks";
 import Image from "next/image";
-import { RootState } from "@/lib/redux/store";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/lib/redux/slices/userSlice";
 
 const Navbar = () => {
   const [userType, setUserType] = useState<"general" | "loggedIn" | "admin">(
     "general"
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { loading, error, user, isAuthenticated } = useSelector(
+    (state: RootState) => state.user
   );
 
   const [toggleAccountLinks, setToggleAccountLinks] = useState<boolean>(false);
@@ -25,7 +32,7 @@ const Navbar = () => {
 
   const cartItemsNumber = useSelector((state: RootState) => state.cart);
 
-  // Close when clicking outside
+  // Close accountLinks when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -60,48 +67,68 @@ const Navbar = () => {
             ref={accountLinksRef}
             className="lg:ml-5 ml-3 hidden md:block relative"
           >
-            {/* The user state (logged-in or not) needs to be checked here */}
-            {false && (
-              <IoPersonOutline
-                className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]"
-                onClick={() => setToggleAccountLinks(!toggleAccountLinks)}
-              />
-            )}
-            {true ? (
+            {isAuthenticated ? (
+              <>
+                <IoPersonOutline
+                  className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]"
+                  onClick={() => setToggleAccountLinks(!toggleAccountLinks)}
+                />
+                {toggleAccountLinks && (
+                  <div className="absolute md:top-full md:left-0 bg-white shadow-md border rounded-md min-w-[180px] z-50">
+                    <ul className="flex flex-col">
+                      <Link href={"/profile"}>
+                        <div
+                          className="flex flex-row justify-between items-center p-3 hover:bg-gray-300
+                        "
+                        >
+                          <MdOutlineKeyboardArrowLeft />
+                          <p>
+                            {user?.firstName} {user?.lastName}
+                          </p>
+                        </div>
+                        <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
+                      </Link>
+                      {accountLinks.map((item, index) => {
+                        if (item.name === "logout") {
+                          return (
+                            <Fragment key={item.name}>
+                              <div
+                                className="flex flex-row justify-end items-center gap-3 p-3 cursor-pointer hover:bg-gray-300"
+                                onClick={() => {
+                                  dispatch(logout());
+                                  setToggleAccountLinks(false);
+                                }}
+                              >
+                                <p>{item.text}</p>
+                                <item.icon className="w-[21px] h-[21px]" />
+                              </div>
+                              {index !== accountLinks.length - 1 && (
+                                <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
+                              )}
+                            </Fragment>
+                          );
+                        } else {
+                          return (
+                            <Link href={item.href!} key={item.name}>
+                              <div className="flex flex-row justify-end items-center cursor-pointer gap-3 p-3 hover:bg-gray-300">
+                                <p>{item.text}</p>
+                                <item.icon className="w-[21px] h-[21px]" />
+                              </div>
+                              {index !== accountLinks.length - 1 && (
+                                <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
+                              )}
+                            </Link>
+                          );
+                        }
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </>
+            ) : (
               <Link href={"/auth/login"}>
                 <IoPersonOutline className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]" />
               </Link>
-            ) : (
-              toggleAccountLinks && (
-                <div className="absolute top-full left-0 bg-white shadow-md border rounded-md min-w-[180px] z-50">
-                  <ul className="flex flex-col">
-                    <Link href={"/profile"}>
-                      <div
-                        className="flex flex-row justify-between items-center p-3 hover:bg-gray-300
-                    "
-                      >
-                        <MdOutlineKeyboardArrowLeft />
-                        {/* Should be the user name */}
-                        <p>حسن بوغنیمه</p>
-                      </div>
-                      <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
-                    </Link>
-                    {accountLinks.map((item, index) => {
-                      return (
-                        <Link href={item.href} key={item.name}>
-                          <div className="flex flex-row justify-end items-center gap-3 p-3 hover:bg-gray-300">
-                            <p>{item.text}</p>
-                            <item.icon className="w-[21px] h-[21px]" />
-                          </div>
-                          {index !== accountLinks.length - 1 && (
-                            <div className="h-[1px] w-[150px] bg-gray-200 m-auto" />
-                          )}
-                        </Link>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )
             )}
           </div>
 
@@ -117,24 +144,28 @@ const Navbar = () => {
           </div>
         </div>
         <ul className="hidden md:flex flex-row justify-center items-center lg:gap-5 gap-3 flex-3">
-          {userType === "general" && (
-            <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-              <Link href={"/contact"}>تماس با ما</Link>
-            </li>
-          )}
-          <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-            <Link href={"/about"}>درباره</Link>
-          </li>
-          {userType === "admin" && (
-            <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
-              <Link href={"/admin"}>پنل ادمین</Link>
-            </li>
-          )}
-          {userType === "loggedIn" && (
+          {isAuthenticated && user?.role === "customer" && (
             <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
               <Link href={"/orders"}>سفارشات</Link>
             </li>
           )}
+
+          {!isAuthenticated && (
+            <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
+              <Link href={"/contact"}>تماس با ما</Link>
+            </li>
+          )}
+
+          <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
+            <Link href={"/about"}>درباره</Link>
+          </li>
+
+          {user?.role === "admin" && (
+            <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
+              <Link href={"/admin"}>پنل ادمین</Link>
+            </li>
+          )}
+
           <li
             className={`font-vazir lg:text-[18px] text-[16px] flex flex-col items-center justify-center cursor-pointer relative group`}
           >
@@ -157,12 +188,14 @@ const Navbar = () => {
               ))}
             </ul>
           </li>
+
           <li className="font-vazir lg:text-[18px] text-[16px] hover:font-bold">
             <Link href={"/home"}>خانه</Link>
           </li>
         </ul>
+
         <div className="flex-1 flex items-center justify-end">
-          <a href="#">
+          <Link href="/home">
             <Image
               width={60}
               height={60}
@@ -170,7 +203,7 @@ const Navbar = () => {
               alt="Logo"
               className="lg:w-[75px] w[60px] lg:h-[75px] h-[60px] cursor-pointer"
             />
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -178,25 +211,27 @@ const Navbar = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
           const isActive = pathname === item.href;
-          if (item.type === userType)
-            return (
-              <ul key={item.href} className="cursor-pointer flex-1">
-                {/* We don't have a specific route for the category, and we show them on the same page in an overlay */}
-                <Link
-                  href={item.name !== "account" ? item.href : "/auth/login"}
-                  className={`font-vazir ${isActive && "font-bold"} text-[14px]
+          if (item.name === "orders" && !isAuthenticated) return null;
+          if (item.name === "orders" && user?.role === "admin") return null;
+          if (item.name === "adminPanel" && user?.role !== "admin") return null;
+          return (
+            <ul key={item.href} className="cursor-pointer flex-1">
+              {/* We don't have a specific route for the category, and we show them on the same page in an overlay */}
+              <Link
+                href={item.name !== "account" ? item.href : "/auth/login"}
+                className={`font-vazir ${isActive && "font-bold"} text-[14px]
                    flex flex-col items-center justify-center gap-1
                   `}
-                >
-                  <item.icon
-                    className={`cursor-pointer ${
-                      isActive ? "text-black" : "text-[#8c8c8c]"
-                    } w-[25px] h-[25px]`}
-                  />
-                  {item.text}
-                </Link>
-              </ul>
-            );
+              >
+                <item.icon
+                  className={`cursor-pointer ${
+                    isActive ? "text-black" : "text-[#8c8c8c]"
+                  } w-[25px] h-[25px]`}
+                />
+                {item.text}
+              </Link>
+            </ul>
+          );
         })}
       </div>
     </nav>

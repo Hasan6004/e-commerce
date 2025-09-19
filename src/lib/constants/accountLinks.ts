@@ -4,7 +4,7 @@ import { MdOutlineAddLocationAlt } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
 
 type accountLinksType = {
-  href: string;
+  href?: string;
   name: string;
   text: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -29,5 +29,5 @@ export const accountLinks: accountLinksType[] = [
     text: "لیست علاقه‌مندی",
     icon: MdOutlineBookmarkBorder,
   },
-  { href: "/logout", name: "logout", text: "خروج از حساب", icon: MdLogout },
+  { name: "logout", text: "خروج از حساب", icon: MdLogout },
 ];

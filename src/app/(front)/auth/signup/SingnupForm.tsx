@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { MdOutlineArrowForward } from "react-icons/md";
+import { createUser } from "@/lib/api/users";
 
 const SingnupForm = () => {
   const [step, setStep] = useState<1 | 2>(1);
@@ -30,22 +31,30 @@ const SingnupForm = () => {
   });
 
   const nextStep = async () => {
-    const valid = await trigger(["name", "lastname"]);
+    const valid = await trigger(["firstname", "lastname"]);
     if (valid) {
       setStep(2);
     }
   };
 
   const handleSignupSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(data);
-    router.push("/auth/login");
-    toast.success("ثبت نام با موفقیت انجام شد", {
-      className: "font-vazir text-[16px] mt-10",
+    const newUser = await createUser({
+      firstName: data.firstname,
+      lastName: data.lastname,
+      email: data.email,
+      password: data.password,
+      role: "customer",
     });
-    // toast.error("خطا در ثبت نام", {
-    //   className: "font-vazir text-[16px] mt-10",
-    // });
+    if (newUser) {
+      toast.success("ثبت نام با موفقیت انجام شد", {
+        className: "font-vazir text-[16px] mt-10",
+      });
+      router.push("/auth/login");
+    } else {
+      toast.error("خطا در ثبت نام", {
+        className: "font-vazir text-[16px] mt-10",
+      });
+    }
   };
 
   return (
@@ -76,8 +85,8 @@ const SingnupForm = () => {
                 <Input
                   type="text"
                   id="name"
-                  {...register("name")}
-                  error={errors.name}
+                  {...register("firstname")}
+                  error={errors.firstname}
                 />
               </div>
               <div className="flex flex-col text-right gap-2 mb-8">

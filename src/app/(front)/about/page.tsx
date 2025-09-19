@@ -1,13 +1,16 @@
 // app/about/page.tsx
 import { Heart, ShieldCheck, Headphones, Truck } from "lucide-react";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
     <div className="font-vazir" dir="rtl">
       <section className=" text-black bg-gray-50 py-20 text-center">
         <div className="mb-6">
-          <img
-            src="./zoodbuy_logo.png"
+          <Image
+            width={96}
+            height={96}
+            src="/zoodbuy_logo.png"
             alt="ZoodBuy Logo"
             className="mx-auto w-24 h-24 object-contain"
           />

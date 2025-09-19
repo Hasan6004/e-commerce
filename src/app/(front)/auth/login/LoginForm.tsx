@@ -10,9 +10,13 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { MdOutlineArrowForward } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/lib/redux/slices/userSlice";
+import { AppDispatch } from "@/lib/redux/store";
 
 const LoginForm = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const {
     register,
@@ -23,13 +27,20 @@ const LoginForm = () => {
     mode: "onTouched",
   });
 
-  const onSubmitLogin = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("HERE");
-    toast.success("خوش آمدید", {
-      className: "font-vazir text-[16px] mt-10",
-    });
-    router.push("/home");
+  const onSubmitLogin = async (data: LoginFormData) => {
+    try {
+      await dispatch(
+        loginUser({ email: data.email, password: data.password })
+      ).unwrap();
+      toast.success("خوش آمدید", {
+        className: "font-vazir text-[16px] mt-10",
+      });
+      router.push("/home");
+    } catch (error) {
+      toast.error(error as string, {
+        className: "font-vazir text-[16px] mt-10",
+      });
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)}>

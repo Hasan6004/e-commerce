@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "علی",
+      "lastName": "احمدی",
+      "email": "ali@gmail.com",
+      "password": "123456",
+      "role": "customer"
+    },
+    {
+      "firstName": "حسن",
+      "lastName": "بوغنیمه",
+      "email": "messi3026004@gmail.com",
+      "password": "123456",
+      "role": "customer",
+      "id": 2
+    },
+    {
+      "firstName": "حسن",
+      "lastName": "بوغنیمه",
+      "email": "hasan@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "id": 2
+    }
+  ]
+}

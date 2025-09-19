@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Categories = () => {
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
+    <div className="flex flex-col justify-center items-center gap-5 p-4 mb-20">
       <h2 className="font-vazir font-bold text-[20px]">انتخاب دسته‌بندی</h2>
       <ul
         className={`w-full flex flex-col justify-center items-center bg-white shadow-md border rounded-md mt-0 z-50`}
