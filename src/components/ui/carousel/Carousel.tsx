@@ -24,6 +24,7 @@ export default function ProductCarousel() {
 
   const limitedProducts = products
     .filter((item) => item.discountPercent > 0)
+    ?.filter((item) => item.inStock > 0)
     ?.slice(0, 7);
 
   return (
@@ -46,33 +47,35 @@ export default function ProductCarousel() {
             key={p.id}
             className="min-w-[60%] sm:min-w-[40%] md:min-w-[30%] lg:min-w-[18%] bg-white rounded-xl shadow shadow-gray-400 pb-4 cursor-pointer"
           >
-            <div className="relative">
-              <div className="absolute bg-black text-white h-8 w-10 rounded-br-2xl flex items-center justify-center">
-                <p className="text-center text-[12px] sm:text-[14px] font-vazir font-medium">
-                  {formatPrice(p.discountPercent)}%
+            <Link href={`/products/${p.id}`}>
+              <div className="relative">
+                <div className="absolute bg-black text-white h-8 w-10 rounded-br-2xl flex items-center justify-center">
+                  <p className="text-center text-[12px] sm:text-[14px] font-vazir font-medium">
+                    {formatPrice(p.discountPercent)}%
+                  </p>
+                </div>
+                <Image
+                  width={300}
+                  height={300}
+                  src={p.imageSrc}
+                  alt={p.name}
+                  className="w-full h-60 object-cover rounded-md"
+                />
+              </div>
+              <h3 className="mt-2 font-medium px-2 text-right font-vazir">
+                {p.name}
+              </h3>
+              <div className="flex items-center justify-between">
+                <p className="text-gray-700 px-2 font-vazir font-bold">
+                  {formatPrice(
+                    String(+p.price - (+p.price * p.discountPercent) / 100)
+                  )}
+                </p>
+                <p className="text-gray-500 px-2 font-vazir line-through">
+                  {formatPrice(p.price)}
                 </p>
               </div>
-              <Image
-                width={300}
-                height={300}
-                src={p.imageSrc}
-                alt={p.name}
-                className="w-full h-60 object-cover rounded-md"
-              />
-            </div>
-            <h3 className="mt-2 font-medium px-2 text-right font-vazir">
-              {p.name}
-            </h3>
-            <div className="flex items-center justify-between">
-              <p className="text-gray-700 px-2 font-vazir font-bold">
-                {formatPrice(
-                  String(+p.price - (+p.price * p.discountPercent) / 100)
-                )}
-              </p>
-              <p className="text-gray-500 px-2 font-vazir line-through">
-                {formatPrice(p.price)}
-              </p>
-            </div>
+            </Link>
           </div>
         ))}
       </div>

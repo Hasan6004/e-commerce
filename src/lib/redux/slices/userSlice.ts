@@ -34,7 +34,6 @@ export const loginUser = createAsyncThunk<
       credentials.email,
       credentials.password
     );
-    console.log("Fetched user:", user);
     if (!user) {
       return rejectWithValue("ایمیل یا رمز عبور اشتباه است");
     }

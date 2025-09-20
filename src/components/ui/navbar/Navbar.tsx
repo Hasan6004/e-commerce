@@ -211,14 +211,15 @@ const Navbar = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
           const isActive = pathname === item.href;
-          if (item.name === "orders" && !isAuthenticated) return null;
-          if (item.name === "orders" && user?.role === "admin") return null;
           if (item.name === "adminPanel" && user?.role !== "admin") return null;
           return (
             <ul key={item.href} className="cursor-pointer flex-1">
-              {/* We don't have a specific route for the category, and we show them on the same page in an overlay */}
               <Link
-                href={item.name !== "account" ? item.href : "/auth/login"}
+                href={
+                  item.name === "account" && isAuthenticated
+                    ? "/account"
+                    : item.href
+                }
                 className={`font-vazir ${isActive && "font-bold"} text-[14px]
                    flex flex-col items-center justify-center gap-1
                   `}

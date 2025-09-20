@@ -124,58 +124,68 @@ export default function ProductDetailsPage({ params }: Props) {
             {/* Price Section */}
             <div className="mt-10 flex flex-col">
               <div className="flex flex-row items-start justify-between gap-5">
-                <p
-                  className={`font-vazir  ${
-                    product.discountPercent > 0
-                      ? "line-through text-gray-600 text-[16px] sm:text-[18px] font-medium"
-                      : "text-black text-[16px] sm:text-[18px] font-bold"
-                  }`}
-                >
-                  {formatPrice(product.price)}
-                  {product.discountPercent === 0 && (
-                    <span className="mr-2">تومان</span>
-                  )}
-                </p>
-                {product.discountPercent > 0 && (
+                {product.inStock === 0 ? (
+                  <p className="font-vazir font-bold text-red-500 text-[18px] sm:text-[20px]">
+                    ناموجود
+                  </p>
+                ) : (
                   <>
-                    <div className="sm:w-[36px] sm:h-[36px] w-[30px] h-[30px] rounded-full bg-black text-white flex items-center justify-center">
-                      <span className="font-vazir text-[12px] sm:text-[14px] font-medium">
-                        {product.discountPercent}%
-                      </span>
-                    </div>
-                    <div>
-                      <p className="font-vazir text-black text-[18px] sm:text-[20px] font-bold">
-                        {formatPrice(
-                          +product.price -
-                            (+product.price * product.discountPercent) / 100
-                        )}
+                    <p
+                      className={`font-vazir  ${
+                        product.discountPercent > 0
+                          ? "line-through text-gray-600 text-[16px] sm:text-[18px] font-medium"
+                          : "text-black text-[16px] sm:text-[18px] font-bold"
+                      }`}
+                    >
+                      {formatPrice(product.price)}
+                      {product.discountPercent === 0 && (
                         <span className="mr-2">تومان</span>
-                      </p>
-                    </div>
+                      )}
+                    </p>
+                    {product.discountPercent > 0 && (
+                      <>
+                        <div className="sm:w-[36px] sm:h-[36px] w-[30px] h-[30px] rounded-full bg-black text-white flex items-center justify-center">
+                          <span className="font-vazir text-[12px] sm:text-[14px] font-medium">
+                            {product.discountPercent}%
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-vazir text-black text-[18px] sm:text-[20px] font-bold">
+                            {formatPrice(
+                              +product.price -
+                                (+product.price * product.discountPercent) / 100
+                            )}
+                            <span className="mr-2">تومان</span>
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
               </div>
 
               {/* Add to cart */}
               <div className="mt-10 text-center">
-                <button
-                  type="button"
-                  className={`${baseButton} px-15`}
-                  onClick={() =>
-                    dispatch(
-                      addToCart({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        quantity: 1,
-                        image: product.imageSrc,
-                        discountPercent: product.discountPercent,
-                      })
-                    )
-                  }
-                >
-                  افزودن به سبد خرید
-                </button>
+                {product.inStock > 0 && (
+                  <button
+                    type="button"
+                    className={`${baseButton} px-15`}
+                    onClick={() =>
+                      dispatch(
+                        addToCart({
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          quantity: 1,
+                          image: product.imageSrc,
+                          discountPercent: product.discountPercent,
+                        })
+                      )
+                    }
+                  >
+                    افزودن به سبد خرید
+                  </button>
+                )}
               </div>
             </div>
           </div>

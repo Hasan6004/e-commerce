@@ -203,19 +203,27 @@ export default function Products({
                   {product.name}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-700 px-2 font-vazir font-bold flex flex-row gap-1">
-                    <span>تومان</span>
-                    {formatPrice(
-                      String(
-                        +product.price -
-                          (+product.price * product.discountPercent) / 100
-                      )
-                    )}
-                  </p>
-                  {product.discountPercent > 0 && (
-                    <p className="mt-1 text-[16px] font-medium text-gray-900 font-vazir flex flex-row line-through">
-                      {formatPrice(product.price)}
+                  {product.inStock === 0 ? (
+                    <p className="font-vazir text-red-500 font-medium text-[18px]">
+                      ناموجود
                     </p>
+                  ) : (
+                    <>
+                      <p className="text-gray-700 px-2 font-vazir font-bold flex flex-row gap-1">
+                        <span>تومان</span>
+                        {formatPrice(
+                          String(
+                            +product.price -
+                              (+product.price * product.discountPercent) / 100
+                          )
+                        )}
+                      </p>
+                      {product.discountPercent > 0 && (
+                        <p className="mt-1 text-[16px] font-medium text-gray-900 font-vazir flex flex-row line-through">
+                          {formatPrice(product.price)}
+                        </p>
+                      )}
+                    </>
                   )}
                 </div>
               </Link>

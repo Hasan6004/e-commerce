@@ -14,6 +14,15 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { AppDispatch } from "@/lib/redux/store";
 
+function isErrorWithMessage(error: unknown): error is { message: string } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as any).message === "string"
+  );
+}
+
 const LoginForm = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -37,9 +46,19 @@ const LoginForm = () => {
       });
       router.push("/home");
     } catch (error) {
-      toast.error(error as string, {
-        className: "font-vazir text-[16px] mt-10",
-      });
+      if (isErrorWithMessage(error)) {
+        toast.error(error.message, {
+          className: "font-vazir text-[16px] mt-10",
+        });
+      } else if (error instanceof Error) {
+        toast.error(error.message, {
+          className: "font-vazir text-[16px] mt-10",
+        });
+      } else {
+        toast.error(error as string, {
+          className: "font-vazir text-[16px] mt-10",
+        });
+      }
     }
   };
   return (

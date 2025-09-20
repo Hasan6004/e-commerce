@@ -22,19 +22,19 @@ export const mobileLinks: navLinks[] = [
     text: "پنل ادمین",
   },
   {
-    href: "/account",
+    href: "/auth/login",
     name: "account",
     icon: IoPersonOutline,
     type: "general",
     text: "خساب من",
   },
-  {
-    href: "/orders",
-    name: "orders",
-    icon: MdOutlineLibraryBooks,
-    type: "loggedIn",
-    text: "سفارشات",
-  },
+  // {
+  //   href: "/orders",
+  //   name: "orders",
+  //   icon: MdOutlineLibraryBooks,
+  //   type: "loggedIn",
+  //   text: "سفارشات",
+  // },
   {
     href: "/cart",
     name: "cart",
