@@ -7,12 +7,10 @@ import { MdModeEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment } from "react";
 import { logout } from "@/lib/redux/slices/userSlice";
-import { useRouter } from "next/navigation";
 
 const Account = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const router = useRouter();
   return (
     <>
       <div className="p-5 flex flex-col gap-3">
@@ -39,10 +37,7 @@ const Account = () => {
                 <Fragment key={item.name}>
                   <div
                     className="flex flex-row justify-between items-center cursor-pointer gap-3 p-5 active:bg-gray-300"
-                    onClick={() => {
-                      router.push("/");
-                      dispatch(logout());
-                    }}
+                    onClick={() => dispatch(logout())}
                   >
                     <div>
                       <MdOutlineKeyboardArrowLeft size={20} />
