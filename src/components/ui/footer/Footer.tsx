@@ -12,7 +12,8 @@ import Image from "next/image";
 
 const Footer = () => {
   const pathname = usePathname();
-  const showFooter = !pathname?.startsWith("/auth");
+  const showFooter =
+    !pathname?.startsWith("/account") && !pathname?.startsWith("/auth");
 
   return !showFooter ? null : (
     <>

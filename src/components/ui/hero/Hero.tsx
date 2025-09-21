@@ -12,8 +12,8 @@ const Hero = () => {
           <Slider>
             {heroImages.map((item) => (
               <Image
-                width={300}
-                height={300}
+                width={600}
+                height={600}
                 key={item.id}
                 src={item.img}
                 alt="image"

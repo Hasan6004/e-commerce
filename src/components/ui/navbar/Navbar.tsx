@@ -17,10 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/lib/redux/slices/userSlice";
 
 const Navbar = () => {
-  const [userType, setUserType] = useState<"general" | "loggedIn" | "admin">(
-    "general"
-  );
-
   const dispatch = useDispatch<AppDispatch>();
 
   const { loading, error, user, isAuthenticated } = useSelector(
@@ -210,7 +206,10 @@ const Navbar = () => {
       <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
         {mobileLinks.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            isAuthenticated && item.name === "account"
+              ? pathname === "/account"
+              : pathname === item.href;
           if (item.name === "adminPanel" && user?.role !== "admin") return null;
           return (
             <ul key={item.href} className="cursor-pointer flex-1">
