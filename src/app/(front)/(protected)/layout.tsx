@@ -13,7 +13,6 @@ export default function ProtectedLayout({
   const router = useRouter();
 
   useEffect(() => {
-    console.log(isAuthenticated);
     if (!isAuthenticated) {
       router.push("/");
     }

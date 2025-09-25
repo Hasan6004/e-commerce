@@ -9,12 +9,13 @@
       "role": "customer"
     },
     {
+      "id": 2,
       "firstName": "حسن",
       "lastName": "بوغنیمه",
       "email": "messi3026004@gmail.com",
       "password": "123456",
       "role": "customer",
-      "id": 2
+      "phone": ""
     },
     {
       "firstName": "حسن",
@@ -22,7 +23,25 @@
       "email": "hasan@gmail.com",
       "password": "123456",
       "role": "admin",
-      "id": 2
+      "id": 3
+    },
+    {
+      "firstName": "حسین",
+      "lastName": "بوغنیمه",
+      "email": "hosein@gmail.com",
+      "password": "123456",
+      "role": "customer",
+      "id": 4
+    }
+  ],
+  "addresses": [
+    {
+      "userId": 2,
+      "province": "خوزستان",
+      "city": "اهواز",
+      "postalCode": "6137874311",
+      "address": "شهرک آب و برق خیابان پارسا",
+      "id": 1
     }
   ]
 }

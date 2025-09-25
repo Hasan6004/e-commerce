@@ -1,10 +1,12 @@
 import { getUserByEmailPassword } from "@/lib/api/auth";
+import api from "@/lib/api/axios";
 import { User } from "@/types/user";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 interface UserLoginFields extends User {}
 
-interface userState {
+export interface userState {
   isAuthenticated: boolean;
   user: UserLoginFields | null;
   // token: string | null;
@@ -41,6 +43,29 @@ export const loginUser = createAsyncThunk<
   }
 );
 
+export const updateUser = createAsyncThunk<
+  User,
+  {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    phone?: string;
+  },
+  { rejectValue: string; state: RootState }
+>("user/update", async (updatedFields, { getState, rejectWithValue }) => {
+  const state = getState();
+  const userId = (state as { user: userState }).user?.user?.id;
+  if (!userId) {
+    return rejectWithValue("کاربر وارد نشده است");
+  }
+  const updatedUser = await api.patch(`/users/${userId}`, updatedFields);
+  if (!updatedUser) {
+    rejectWithValue("خطا در به‌روزرسانی اطلاعات کاربر");
+  }
+  return updatedUser.data;
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -52,7 +77,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
-    // think about adding user when registering. how and where to store the registered user (except database for now)
   },
   extraReducers: (builder) => {
     builder
@@ -77,6 +101,20 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         state.error = action.payload ?? "خطای ناشناخته";
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
+        state.loading = false;
+        state.error = null;
+        state.user = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.payload ?? "خطای ناشناخته در به‌روزرسانی اطلاعات کاربر";
       });
   },
 });

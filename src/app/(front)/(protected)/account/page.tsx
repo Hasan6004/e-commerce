@@ -23,10 +23,12 @@ const Account = () => {
               {user?.email}
             </p>
             <div className="text-center">
-              <MdModeEdit
-                size={24}
-                className="active:bg-gray-500 rounded-2xl"
-              />
+              <Link href={"/profile"}>
+                <MdModeEdit
+                  size={24}
+                  className="active:bg-gray-500 rounded-2xl"
+                />
+              </Link>
             </div>
           </div>
         </div>

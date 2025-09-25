@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../input/Input";
 import { baseButton } from "@/styles/buttonStyles";
 import { FaInstagram } from "react-icons/fa6";
@@ -12,10 +12,13 @@ import Image from "next/image";
 
 const Footer = () => {
   const pathname = usePathname();
-  const showFooter =
-    !pathname?.startsWith("/account") && !pathname?.startsWith("/auth");
+  const hideFooter =
+    pathname?.startsWith("/account") ||
+    pathname?.startsWith("/auth") ||
+    pathname.startsWith("/profile") ||
+    pathname.startsWith("/addresses");
 
-  return !showFooter ? null : (
+  return hideFooter ? null : (
     <>
       <footer className="w-full border-t border-b flex items-center justify-center flex-col p-5">
         <div className="flex max-md:flex-col-reverse max-md:gap-10 items-center justify-between w-full">

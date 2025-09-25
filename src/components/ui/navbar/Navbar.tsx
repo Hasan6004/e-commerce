@@ -91,8 +91,8 @@ const Navbar = () => {
                               <div
                                 className="flex flex-row justify-end items-center gap-3 p-3 cursor-pointer hover:bg-gray-300"
                                 onClick={() => {
-                                  dispatch(logout());
                                   setToggleAccountLinks(false);
+                                  dispatch(logout());
                                 }}
                               >
                                 <p>{item.text}</p>
@@ -106,7 +106,10 @@ const Navbar = () => {
                         } else {
                           return (
                             <Link href={item.href!} key={item.name}>
-                              <div className="flex flex-row justify-end items-center cursor-pointer gap-3 p-3 hover:bg-gray-300">
+                              <div
+                                className="flex flex-row justify-end items-center cursor-pointer gap-3 p-3 hover:bg-gray-300"
+                                onClick={() => setToggleAccountLinks(false)}
+                              >
                                 <p>{item.text}</p>
                                 <item.icon className="w-[21px] h-[21px]" />
                               </div>

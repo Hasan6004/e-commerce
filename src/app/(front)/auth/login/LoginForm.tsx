@@ -13,15 +13,7 @@ import { MdOutlineArrowForward } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { AppDispatch } from "@/lib/redux/store";
-
-function isErrorWithMessage(error: unknown): error is { message: string } {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "message" in error &&
-    typeof (error as any).message === "string"
-  );
-}
+import { handleError } from "@/lib/utils/handleError";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -46,19 +38,7 @@ const LoginForm = () => {
       });
       router.push("/home");
     } catch (error) {
-      if (isErrorWithMessage(error)) {
-        toast.error(error.message, {
-          className: "font-vazir text-[16px] mt-10",
-        });
-      } else if (error instanceof Error) {
-        toast.error(error.message, {
-          className: "font-vazir text-[16px] mt-10",
-        });
-      } else {
-        toast.error(error as string, {
-          className: "font-vazir text-[16px] mt-10",
-        });
-      }
+      handleError(error);
     }
   };
   return (
