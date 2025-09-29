@@ -15,6 +15,8 @@ import {
 } from "@/lib/redux/slices/cartSlice";
 import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
+import Link from "next/link";
+import PriceData from "@/components/ui/priceData/PriceData";
 
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart);
@@ -34,7 +36,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="p-5 flex flex-col lg:flex-row justify-center items-center lg:items-start gap-6">
+      <div className="p-5 flex flex-col lg:flex-row justify-center items-center lg:items-start gap-6 mb-30">
         {cartItems.length === 0 ? (
           <div className="text-center text-[18px] sm:text-[22px]  font-bold font-vazir h-[100vh] flex flex-col items-center justify-start gap-10 mt-20">
             <BsCartX size={60} />
@@ -107,31 +109,39 @@ const Cart = () => {
                 );
               })}
             </div>
-            <div className="border-1 rounded-2xl w-full max-w-[350px] p-2 sm:p-5 flex flex-col gap-3 items-end">
-              <div className="flex flex-row gap-1 font-vazir font-medium">
-                <p>{sumOfQuantities}</p>
-                <span>:تعداد محصول</span>
-              </div>
-              <div className="flex flex-row gap-1 font-vazir font-medium">
-                <p>{formatPrice(sumOfPrices)}</p>
-                <span>:جمع خرید خام</span>
-              </div>
-              <div className="flex flex-row gap-1 font-vazir font-medium text-red-600">
-                <p>{formatPrice(sumOfDiscounts)}</p>
-                <span>:جمع تخفیف</span>
-              </div>
-              <div className="w-[100%] h-[1px] bg-gray-200" />
-              <div className="flex flex-row gap-1 font-vazir font-medium">
-                <span>تومان</span>
-                <p>{formatPrice(sumOfPrices - sumOfDiscounts)}</p>
-                <span>:جمع خرید نهایی </span>
-              </div>
+            <PriceData
+              sumOfDiscounts={sumOfDiscounts}
+              sumOfPrices={sumOfPrices}
+              sumOfQuantities={sumOfQuantities}
+            >
               <div className="w-[100%] sm:flex justify-center hidden mt-3">
-                <button className={baseButton}>تایید و پرداخت سفارش</button>
+                <Link
+                  href={{
+                    pathname: "/checkout",
+                    query: {
+                      prices: sumOfPrices,
+                      discounts: sumOfDiscounts,
+                      quantities: sumOfQuantities,
+                    },
+                  }}
+                >
+                  <button className={baseButton}>تایید و پرداخت سفارش</button>
+                </Link>
               </div>
-            </div>
+            </PriceData>
             <div className="sm:hidden flex justify-center w-full">
-              <button className={baseButton}>تایید و پرداخت سفارش</button>
+              <Link
+                href={{
+                  pathname: "/checkout",
+                  query: {
+                    prices: sumOfPrices,
+                    discounts: sumOfDiscounts,
+                    quantities: sumOfQuantities,
+                  },
+                }}
+              >
+                <button className={baseButton}>تایید و پرداخت سفارش</button>
+              </Link>
             </div>
           </>
         )}

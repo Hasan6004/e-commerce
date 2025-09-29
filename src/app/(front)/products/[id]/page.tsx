@@ -6,8 +6,10 @@ import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
 import Image from "next/image";
 import { useState } from "react";
-import { addToCart } from "@/lib/redux/slices/cartSlice";
-import { useDispatch } from "react-redux";
+import { addToCart, incrementQuantity } from "@/lib/redux/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { RootState } from "@/lib/redux/store";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -35,6 +37,30 @@ export default function ProductDetailsPage({ params }: Props) {
   );
 
   const dispatch = useDispatch();
+
+  const cartItems = useSelector((state: RootState) => state.cart);
+
+  const handleAddToCart = () => {
+    // first we should check if its in the user cart beforehand. if it is present then we only need to increment its quantity
+    const cartProduct = cartItems.find((item) => item.id === product?.id);
+    if (cartProduct) {
+      dispatch(incrementQuantity(product?.id));
+    } else {
+      dispatch(
+        addToCart({
+          id: product?.id,
+          name: product?.name,
+          price: product?.price,
+          quantity: 1,
+          image: product?.imageSrc,
+          discountPercent: product?.discountPercent,
+        })
+      );
+    }
+    toast.success("محصول مورد نظر به سبد خرید اضافه شد", {
+      className: "font-vazir text-[14px] sm:text-[16px] mt-10",
+    });
+  };
 
   if (!product) return <p>محصولی یافت نشد</p>;
 
@@ -170,18 +196,7 @@ export default function ProductDetailsPage({ params }: Props) {
                   <button
                     type="button"
                     className={`${baseButton} px-15`}
-                    onClick={() =>
-                      dispatch(
-                        addToCart({
-                          id: product.id,
-                          name: product.name,
-                          price: product.price,
-                          quantity: 1,
-                          image: product.imageSrc,
-                          discountPercent: product.discountPercent,
-                        })
-                      )
-                    }
+                    onClick={() => handleAddToCart()}
                   >
                     افزودن به سبد خرید
                   </button>

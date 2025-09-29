@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { baseButton } from "@/styles/buttonStyles";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/lib/redux/slices/userSlice";
@@ -18,6 +18,7 @@ import { handleError } from "@/lib/utils/handleError";
 const LoginForm = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -36,7 +37,8 @@ const LoginForm = () => {
       toast.success("خوش آمدید", {
         className: "font-vazir text-[16px] mt-10",
       });
-      router.push("/home");
+      const redirect = searchParams.get("redirect") || "/";
+      router.push(redirect);
     } catch (error) {
       handleError(error);
     }
