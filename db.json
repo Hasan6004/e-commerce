@@ -43,5 +43,50 @@
       "address": "شهرک آب و برق خیابان پارسا",
       "id": 1
     }
+  ],
+  "orders": [
+    {
+      "orderId": 11122233,
+      "userId": 2,
+      "products": [
+        {
+          "productId": 2,
+          "quantity": 2
+        },
+        {
+          "productId": 4,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 1150000,
+      "status": "در حال پردازش",
+      "date": "1404-08-10"
+    },
+    {
+      "orderId": 11122234,
+      "userId": 2,
+      "products": [
+        {
+          "productId": 1,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 16500000,
+      "status": "در حال پردازش",
+      "date": "1404-08-10"
+    },
+    {
+      "orderId": 11122235,
+      "userId": 2,
+      "products": [
+        {
+          "productId": 1,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 16500000,
+      "status": "در حال پردازش",
+      "date": "1404-08-10"
+    }
   ]
 }

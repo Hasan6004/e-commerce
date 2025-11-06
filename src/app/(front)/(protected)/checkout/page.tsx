@@ -6,7 +6,7 @@ import { addNewAddress, fetchAddress } from "@/lib/redux/slices/addressSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { handleError } from "@/lib/utils/handleError";
 import { baseButton } from "@/styles/buttonStyles";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdOutlineAddLocationAlt, MdOutlineWarning } from "react-icons/md";
@@ -24,6 +24,8 @@ const page = () => {
   const { addresses } = useSelector((state: RootState) => state.address);
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
+
+  const router = useRouter();
 
   const params = useSearchParams();
 
@@ -92,6 +94,8 @@ const page = () => {
           className: "font-vazir text-[16px] mt-10 border-1",
         }
       );
+    } else {
+      router.push("/orders");
     }
   };
 
@@ -118,18 +122,18 @@ const page = () => {
             />
           )}
           <div className="border-1 rounded-2xl p-4  w-full max-w-[350px]">
-            <h2 className="font-vazir text-[16px] sm:text-[18px] font-bold text-center">
-              انتخاب آدرس
-            </h2>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-between items-center">
               <button
                 type="button"
-                className={`${baseButton} flex flex-row gap-2 mt-5`}
+                className={`flex flex-row items-center gap-1 bg-white text-black text-[12px] sm:text-[14px] font-bold cursor-pointer`}
                 onClick={() => setToggleAddressOverlay(true)}
               >
-                <MdOutlineAddLocationAlt size={22} />
+                <MdOutlineAddLocationAlt size={16} />
                 افزودن آدرس جدید
               </button>
+              <h2 className="font-vazir text-[16px] sm:text-[18px] font-bold text-center">
+                انتخاب آدرس
+              </h2>
             </div>
             <div
               className={`flex flex-col items-center mt-5 w-full ${
