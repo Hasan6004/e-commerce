@@ -33,6 +33,22 @@ export const fetchOrdersByUser = createAsyncThunk<
   return orders.data;
 });
 
+export const createOrder = createAsyncThunk<
+  Order,
+  Order,
+  { rejectValue: string; state: RootState }
+>("orders/create", async (newOrder, { getState, rejectWithValue }) => {
+  const userId = (getState() as { user: userState }).user?.user?.id;
+  if (!userId) {
+    return rejectWithValue("کاربر وارد نشده است");
+  }
+  const order = await api.post<Order>("/orders", newOrder);
+  if (!order) {
+    return rejectWithValue("خطا در ایجاد سفارش");
+  }
+  return order.data;
+});
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -55,6 +71,23 @@ const orderSlice = createSlice({
       .addCase(fetchOrdersByUser.rejected, (state, action) => {
         state.loading = false;
         state.orders = null;
+        state.error = action.payload ?? "خطای ناشناخته";
+      })
+      .addCase(createOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createOrder.fulfilled, (state, action: PayloadAction<Order>) => {
+        state.loading = false;
+        state.error = null;
+        if (state.orders) {
+          state.orders?.push(action.payload);
+        } else {
+          state.orders = [action.payload];
+        }
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload ?? "خطای ناشناخته";
       });
   },

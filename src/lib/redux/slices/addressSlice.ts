@@ -72,7 +72,7 @@ export const addNewAddress = createAsyncThunk<
     newAddress
   );
   if (!newAddressResponse) {
-    rejectWithValue("خطا در ذخیره آدرس جدید");
+    rejectWithValue("خطا در ایجاد آدرس جدید");
   }
 
   const formattedNewAddress: Address = {

@@ -2,7 +2,7 @@
 
 import { RootState } from "@/lib/redux/store";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
@@ -34,6 +34,7 @@ const Cart = () => {
   }, 0);
 
   const dispatch = useDispatch();
+
   return (
     <>
       <div className="p-5 flex flex-col lg:flex-row justify-center items-center lg:items-start gap-6 mb-30">

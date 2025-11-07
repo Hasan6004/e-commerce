@@ -3,9 +3,12 @@
 import AddressModal from "@/components/features/addressModal/AddressModal";
 import PriceData from "@/components/ui/priceData/PriceData";
 import { addNewAddress, fetchAddress } from "@/lib/redux/slices/addressSlice";
+import { clearCart } from "@/lib/redux/slices/cartSlice";
+import { createOrder } from "@/lib/redux/slices/orderSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { handleError } from "@/lib/utils/handleError";
 import { baseButton } from "@/styles/buttonStyles";
+import { Order } from "@/types/order";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -24,6 +27,7 @@ const page = () => {
   const { addresses } = useSelector((state: RootState) => state.address);
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
+  const cartItems = useSelector((state: RootState) => state.cart);
 
   const router = useRouter();
 
@@ -83,7 +87,7 @@ const page = () => {
     }
   };
 
-  const handlePay = () => {
+  const handlePay = async () => {
     if (!selectedAddress) {
       toast(
         <span className="flex flex-row items-center gap-3">
@@ -95,7 +99,31 @@ const page = () => {
         }
       );
     } else {
-      router.push("/orders");
+      const d = new Date();
+      const cartProducts = cartItems.map((item) => {
+        return { productId: item.id, quantity: item.quantity };
+      });
+      const newOrder: Order = {
+        orderId: Math.trunc(Math.random() * 1000000000),
+        userId: user?.id!,
+        status: "در حال پردازش",
+        date: new Intl.DateTimeFormat("fa-IR").format(d).replaceAll("/", "-"),
+        totalPrice: +prices!,
+        products: cartProducts,
+      };
+      console.log(newOrder);
+      try {
+        // Posting the new Order
+        await dispatch(createOrder(newOrder));
+        // Clearing the cart
+        dispatch(clearCart());
+        toast.success("تبریک! سفارش شما با موفقیت ثبت شد", {
+          className: "font-vazir text-[16px] mt-10",
+        });
+      } catch (error) {
+        handleError(error);
+      }
+      // router.push("/orders");
     }
   };
 
