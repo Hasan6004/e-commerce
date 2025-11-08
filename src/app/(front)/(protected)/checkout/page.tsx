@@ -123,7 +123,7 @@ const page = () => {
       } catch (error) {
         handleError(error);
       }
-      // router.push("/orders");
+      router.push(`/paymentConfirm?code=${newOrder.orderId}`);
     }
   };
 
