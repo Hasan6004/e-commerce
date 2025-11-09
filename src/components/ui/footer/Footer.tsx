@@ -19,7 +19,8 @@ const Footer = () => {
     pathname.startsWith("/addresses") ||
     pathname.startsWith("/checkout") ||
     pathname.startsWith("/orders") ||
-    pathname.startsWith("/paymentConfirm");
+    pathname.startsWith("/paymentConfirm") ||
+    pathname.startsWith("/bookmarks");
 
   return hideFooter ? null : (
     <>

@@ -10,7 +10,12 @@ import { addToCart, incrementQuantity } from "@/lib/redux/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { RootState } from "@/lib/redux/store";
-
+import { MdOutlineBookmarkAdd } from "react-icons/md";
+import { MdOutlineBookmarkRemove } from "react-icons/md";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/lib/redux/slices/favoriteSlice";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -39,6 +44,8 @@ export default function ProductDetailsPage({ params }: Props) {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state: RootState) => state.cart);
+
+  const favorites = useSelector((state: RootState) => state.favorite);
 
   const handleAddToCart = () => {
     // first we should check if its in the user cart beforehand. if it is present then we only need to increment its quantity
@@ -191,8 +198,8 @@ export default function ProductDetailsPage({ params }: Props) {
               </div>
 
               {/* Add to cart */}
-              <div className="mt-10 text-center">
-                {product.inStock > 0 && (
+              {product.inStock > 0 && (
+                <div className="mt-10 text-center flex justify-center items-center gap-3">
                   <button
                     type="button"
                     className={`${baseButton} px-15`}
@@ -200,8 +207,27 @@ export default function ProductDetailsPage({ params }: Props) {
                   >
                     افزودن به سبد خرید
                   </button>
-                )}
-              </div>
+                  {favorites.includes(+product?.id) ? (
+                    <button
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        dispatch(removeFromFavorites(+product?.id))
+                      }
+                    >
+                      <MdOutlineBookmarkRemove size={32} />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() => dispatch(addToFavorites(+product?.id))}
+                    >
+                      <MdOutlineBookmarkAdd size={32} />
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
