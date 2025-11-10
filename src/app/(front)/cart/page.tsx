@@ -17,6 +17,7 @@ import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
 import Link from "next/link";
 import PriceData from "@/components/ui/priceData/PriceData";
+import { setNumbers } from "@/lib/redux/slices/checkoutSlice";
 
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart);
@@ -116,32 +117,40 @@ const Cart = () => {
               sumOfQuantities={sumOfQuantities}
             >
               <div className="w-[100%] sm:flex justify-center hidden mt-3">
-                <Link
-                  href={{
-                    pathname: "/checkout",
-                    query: {
-                      prices: sumOfPrices,
-                      discounts: sumOfDiscounts,
-                      quantities: sumOfQuantities,
-                    },
-                  }}
-                >
-                  <button className={baseButton}>تایید و پرداخت سفارش</button>
+                <Link href="/checkout">
+                  <button
+                    className={baseButton}
+                    onClick={() =>
+                      dispatch(
+                        setNumbers({
+                          prices: sumOfPrices,
+                          discounts: sumOfDiscounts,
+                          quantities: sumOfQuantities,
+                        })
+                      )
+                    }
+                  >
+                    تایید و پرداخت سفارش
+                  </button>
                 </Link>
               </div>
             </PriceData>
             <div className="sm:hidden flex justify-center w-full">
-              <Link
-                href={{
-                  pathname: "/checkout",
-                  query: {
-                    prices: sumOfPrices,
-                    discounts: sumOfDiscounts,
-                    quantities: sumOfQuantities,
-                  },
-                }}
-              >
-                <button className={baseButton}>تایید و پرداخت سفارش</button>
+              <Link href="/checkout">
+                <button
+                  className={baseButton}
+                  onClick={() =>
+                    dispatch(
+                      setNumbers({
+                        prices: sumOfPrices,
+                        discounts: sumOfDiscounts,
+                        quantities: sumOfQuantities,
+                      })
+                    )
+                  }
+                >
+                  تایید و پرداخت سفارش
+                </button>
               </Link>
             </div>
           </>

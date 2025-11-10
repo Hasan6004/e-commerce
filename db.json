@@ -169,5 +169,6 @@
       ],
       "id": 8
     }
-  ]
+  ],
+  "favorites": [{ "productId": 2 }]
 }

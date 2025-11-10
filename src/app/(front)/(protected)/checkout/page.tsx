@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import { handleError } from "@/lib/utils/handleError";
 import { baseButton } from "@/styles/buttonStyles";
 import { Order } from "@/types/order";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdOutlineAddLocationAlt, MdOutlineWarning } from "react-icons/md";
@@ -31,11 +31,9 @@ const page = () => {
 
   const router = useRouter();
 
-  const params = useSearchParams();
-
-  const prices = params.get("prices");
-  const discounts = params.get("discounts");
-  const quantities = params.get("quantities");
+  const { prices, discounts, quantities } = useSelector(
+    (state: RootState) => state.checkout
+  );
 
   const fetchAddresses = async () => {
     try {
@@ -111,7 +109,6 @@ const page = () => {
         totalPrice: +prices!,
         products: cartProducts,
       };
-      console.log(newOrder);
       try {
         // Posting the new Order
         await dispatch(createOrder(newOrder));

@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
+interface favoriteItem {
+  productId: number;
+}
+
 const initialState: number[] = [];
 
 const favoriteSlice = createSlice({
