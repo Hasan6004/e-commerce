@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, use } from "react";
+import { Fragment, use, useEffect } from "react";
 import products from "@/lib/constants/products";
 import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
@@ -9,13 +9,15 @@ import { useState } from "react";
 import { addToCart, incrementQuantity } from "@/lib/redux/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { RootState } from "@/lib/redux/store";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 import { MdOutlineBookmarkRemove } from "react-icons/md";
 import {
-  addToFavorites,
+  addFavorite,
   removeFromFavorites,
 } from "@/lib/redux/slices/favoriteSlice";
+import { handleError } from "@/lib/utils/handleError";
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -41,14 +43,18 @@ export default function ProductDetailsPage({ params }: Props) {
     "description"
   );
 
-  const dispatch = useDispatch();
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const cartItems = useSelector((state: RootState) => state.cart);
 
-  const favorites = useSelector((state: RootState) => state.favorite);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const { favorites } = useSelector((state: RootState) => state.favorite);
 
   const handleAddToCart = () => {
-    // first we should check if its in the user cart beforehand. if it is present then we only need to increment its quantity
+    // first we should check if its in the user cart beforehand. if it exists then we only need to increment its quantity
     const cartProduct = cartItems.find((item) => item.id === product?.id);
     if (cartProduct) {
       dispatch(incrementQuantity(product?.id));
@@ -69,7 +75,36 @@ export default function ProductDetailsPage({ params }: Props) {
     });
   };
 
+  const handleAddToFavorite = async (productId: number) => {
+    try {
+      await dispatch(
+        addFavorite({
+          productId,
+          userId: +user!?.id,
+        })
+      ).unwrap();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const handleRemoveFromFavorite = async (id: number) => {
+    try {
+      await dispatch(removeFromFavorites(id)).unwrap();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   if (!product) return <p>محصولی یافت نشد</p>;
+
+  useEffect(() => {
+    setIsInFavorites(
+      !!favorites?.some(
+        (item) => item.productId === +productId && item.userId === +user!.id
+      )
+    );
+  }, [favorites]);
 
   return (
     <div className="px-10 h-screen py-10">
@@ -207,13 +242,11 @@ export default function ProductDetailsPage({ params }: Props) {
                   >
                     افزودن به سبد خرید
                   </button>
-                  {favorites.includes(+product?.id) ? (
+                  {isInFavorites ? (
                     <button
                       type="button"
                       className="cursor-pointer"
-                      onClick={() =>
-                        dispatch(removeFromFavorites(+product?.id))
-                      }
+                      onClick={() => handleRemoveFromFavorite(+productId)}
                     >
                       <MdOutlineBookmarkRemove size={32} />
                     </button>
@@ -221,7 +254,7 @@ export default function ProductDetailsPage({ params }: Props) {
                     <button
                       type="button"
                       className="cursor-pointer"
-                      onClick={() => dispatch(addToFavorites(+product?.id))}
+                      onClick={() => handleAddToFavorite(+product?.id)}
                     >
                       <MdOutlineBookmarkAdd size={32} />
                     </button>

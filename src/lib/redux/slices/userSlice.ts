@@ -57,7 +57,7 @@ export const updateUser = createAsyncThunk<
   const state = getState();
   const userId = (state as { user: userState }).user?.user?.id;
   if (!userId) {
-    return rejectWithValue("کاربر وارد نشده است");
+    return rejectWithValue("لطفا ابتدا وارد شوید");
   }
   const updatedUser = await api.patch(`/users/${userId}`, updatedFields);
   if (!updatedUser) {

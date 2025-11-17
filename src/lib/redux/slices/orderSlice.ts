@@ -23,7 +23,7 @@ export const fetchOrdersByUser = createAsyncThunk<
 >("orders/fetch", async (_, { getState, rejectWithValue }) => {
   const userId = (getState() as { user: userState }).user?.user?.id;
   if (!userId) {
-    return rejectWithValue("کاربر وارد نشده است");
+    return rejectWithValue("لطفا ابتدا وارد شوید");
   }
   const orders = await api.get<Order[]>(`/orders?userId=${userId}`);
   if (!orders) {
@@ -40,7 +40,7 @@ export const createOrder = createAsyncThunk<
 >("orders/create", async (newOrder, { getState, rejectWithValue }) => {
   const userId = (getState() as { user: userState }).user?.user?.id;
   if (!userId) {
-    return rejectWithValue("کاربر وارد نشده است");
+    return rejectWithValue("لطفا ابتدا وارد شوید");
   }
   const order = await api.post<Order>("/orders", newOrder);
   if (!order) {

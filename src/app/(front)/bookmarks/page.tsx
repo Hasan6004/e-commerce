@@ -1,24 +1,23 @@
 "use client";
 
 import products from "@/lib/constants/products";
-import { RootState } from "@/lib/redux/store";
+import { fetchFavorites } from "@/lib/redux/slices/favoriteSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import formatPrice from "@/lib/utils/formatPrice";
+import { handleError } from "@/lib/utils/handleError";
 import { productType } from "@/types/poductType";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type discountVisibilityType = {
   [productId: number | string]: boolean;
 };
 
 const Bookmarks = () => {
-  const [favoriteProducts, setFavoriteProducts] = useState<
-    productType[] | null
-  >(null);
-
-  const favorites = useSelector((state: RootState) => state.favorite);
+  const dispatch = useDispatch<AppDispatch>();
+  const { favorites } = useSelector((state: RootState) => state.favorite);
   const [discountVisibility, setDiscountVisibility] =
     useState<discountVisibilityType>({});
 
@@ -30,15 +29,20 @@ const Bookmarks = () => {
     setDiscountVisibility((prev) => ({ ...prev, [productId]: false }));
   };
 
+  const favoriteProducts = useMemo(() => {
+    return favorites?.map((f) => products.find((p) => p.id === f.productId));
+  }, [favorites]);
+
+  const fetchFavoritesFunc = async () => {
+    try {
+      await dispatch(fetchFavorites()).unwrap();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   useEffect(() => {
-    let result: productType[] = [];
-    favorites.forEach((favId) => {
-      const temp = products.find((item) => item.id === favId);
-      if (temp) {
-        result.push(temp);
-      }
-    });
-    setFavoriteProducts(result);
+    fetchFavoritesFunc();
   }, []);
 
   return (
@@ -53,17 +57,17 @@ const Bookmarks = () => {
       <div className="p-10 grid grid-cols-1 gap-x-6 gap-y-15 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {favoriteProducts?.map((product) => (
           <Link
-            key={product.id}
-            href={`/products/${product.id}`}
+            key={product?.id}
+            href={`/products/${product?.id}`}
             className="group"
           >
             <div className="relative">
               <div>
-                {product.discountPercent !== 0 &&
-                  discountVisibility[product.id] !== false && (
+                {product?.discountPercent !== 0 &&
+                  discountVisibility[product!.id] !== false && (
                     <div className="absolute bg-black text-white h-8 w-10 rounded-br-2xl flex items-center justify-center z-50">
                       <p className="text-center text-[12px] sm:text-[14px] font-vazir font-medium">
-                        {`${product.discountPercent}%`}
+                        {`${product?.discountPercent}%`}
                       </p>
                     </div>
                   )}
@@ -71,18 +75,18 @@ const Bookmarks = () => {
               <Image
                 width={300}
                 height={300}
-                alt={product.name}
-                src={product.imageSrc}
-                onLoad={() => handleImageLoad(product.id)}
-                onError={() => handleImageError(product.id)}
+                alt={product!.name}
+                src={product!.imageSrc}
+                onLoad={() => handleImageLoad(product!.id)}
+                onError={() => handleImageError(product!.id)}
                 className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
               />
             </div>
             <h3 className="mt-4 text-[16px] font-bold text-gray-700 font-vazir text-right">
-              {product.name}
+              {product!.name}
             </h3>
             <div className="flex items-center justify-between">
-              {product.inStock === 0 ? (
+              {product!.inStock === 0 ? (
                 <p className="font-vazir text-red-500 font-medium text-[18px]">
                   ناموجود
                 </p>
@@ -92,14 +96,14 @@ const Bookmarks = () => {
                     <span>تومان</span>
                     {formatPrice(
                       String(
-                        +product.price -
-                          (+product.price * product.discountPercent) / 100
+                        +product!.price -
+                          (+product!.price * product!.discountPercent) / 100
                       )
                     )}
                   </p>
-                  {product.discountPercent > 0 && (
+                  {product!.discountPercent > 0 && (
                     <p className="mt-1 text-[16px] font-medium text-gray-900 font-vazir flex flex-row line-through">
-                      {formatPrice(product.price)}
+                      {formatPrice(product!.price)}
                     </p>
                   )}
                 </>

@@ -32,7 +32,7 @@ export const fetchAddress = createAsyncThunk<
 >("address/get", async (_, { getState, rejectWithValue }) => {
   const userId = (getState() as { user: userState }).user?.user?.id;
   if (!userId) {
-    return rejectWithValue("کاربر وارد نشده است");
+    return rejectWithValue("لطفا ابتدا وارد شوید");
   }
   const addresses = await api.get<AddressFromServer[]>(
     `/addresses?userId=${userId}`
@@ -65,7 +65,7 @@ export const addNewAddress = createAsyncThunk<
 >("address/add", async (newAddress, { getState, rejectWithValue }) => {
   const userId = (getState() as { user: userState }).user?.user?.id;
   if (!userId) {
-    return rejectWithValue("کاربر وارد نشده است");
+    return rejectWithValue("لطفا ابتدا وارد شوید");
   }
   const newAddressResponse = await api.post<AddressFromServer>(
     "/addresses",
@@ -135,8 +135,10 @@ const addressSlice = createSlice({
           state.error = null;
           state.loading = false;
           if (state.addresses) {
+            console.log("IIII");
             state.addresses?.push(action.payload);
           } else {
+            console.log("wwwwww");
             state.addresses = [action.payload];
           }
         }
