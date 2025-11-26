@@ -44,7 +44,22 @@
       "id": 1
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "orderId": 373439502,
+      "userId": 2,
+      "status": "در حال پردازش",
+      "date": "۱۴۰۴-۸-۲۷",
+      "totalPrice": 16500000,
+      "products": [
+        {
+          "productId": 1,
+          "quantity": 1
+        }
+      ],
+      "id": 1
+    }
+  ],
   "favorites": [
     {
       "productId": 1,
