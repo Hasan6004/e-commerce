@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Input from "../input/Input";
 import { baseButton } from "@/styles/buttonStyles";
 import { FaInstagram } from "react-icons/fa6";
@@ -15,12 +15,13 @@ const Footer = () => {
   const hideFooter =
     pathname?.startsWith("/account") ||
     pathname?.startsWith("/auth") ||
-    pathname.startsWith("/profile") ||
-    pathname.startsWith("/addresses") ||
-    pathname.startsWith("/checkout") ||
-    pathname.startsWith("/orders") ||
-    pathname.startsWith("/paymentConfirm") ||
-    pathname.startsWith("/bookmarks");
+    pathname?.startsWith("/profile") ||
+    pathname?.startsWith("/addresses") ||
+    pathname?.startsWith("/checkout") ||
+    pathname?.startsWith("/orders") ||
+    pathname?.startsWith("/paymentConfirm") ||
+    pathname?.startsWith("/bookmarks") ||
+    pathname?.startsWith("/adminPanel");
 
   return hideFooter ? null : (
     <>
