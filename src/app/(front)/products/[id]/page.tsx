@@ -107,8 +107,8 @@ export default function ProductDetailsPage({ params }: Props) {
   }, [favorites]);
 
   return (
-    <div className="px-10 h-screen py-10">
-      <div className="flex flex-col items-center  lg:flex-row-reverse lg:items-start lg:justify-between py-5">
+    <div className="px-10 w-full py-10">
+      <div className="flex flex-col items-center lg:flex-row-reverse lg:items-start lg:justify-between py-5">
         {/* Product image */}
         <div className="flex-1">
           <Image
@@ -120,7 +120,7 @@ export default function ProductDetailsPage({ params }: Props) {
         </div>
 
         {/* Product details */}
-        <div className="flex-2 flex flex-col items-center" dir="rtl">
+        <div className="flex-2 flex flex-col items-center mt-5" dir="rtl">
           <div>
             <h1 className="font-vazir font-bold text-[24px] sm:text-[30px] mb-5">
               {product.name}

@@ -118,10 +118,10 @@ export default function Products({
       <div className="mx-10 pb-16 sm:pb-24 mt-5 flex flex-row items-start justify-between gap-5">
         <div className="flex flex-col gap-3  lg:flex-4/5 flex-1">
           {filteredProducts?.length! > 1 && (
-            <div className="flex items-center overflow-x-auto whitespace-nowrap gap-3 mt-5 scrollbar-hide">
+            <div className="flex items-center overflow-x-auto whitespace-nowrap gap-3 mt-5 scrollbar-hide mb-3">
               <button
                 type="button"
-                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-12px sm:text-[14px] px-2 py-1 rounded-4xl ${
+                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-[12px] sm:text-[14px] px-2 py-1 rounded-4xl ${
                   selectedOrder === "most expensive"
                     ? "border-black border-2 font-bold"
                     : "border-gray-700"
@@ -133,7 +133,7 @@ export default function Products({
 
               <button
                 type="button"
-                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-12px sm:text-[14px] px-2 py-1 rounded-4xl ${
+                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-[12px] sm:text-[14px] px-2 py-1 rounded-4xl ${
                   selectedOrder === "cheapest"
                     ? "border-black border-2 font-bold"
                     : "border-gray-700"
@@ -145,7 +145,7 @@ export default function Products({
 
               <button
                 type="button"
-                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-12px sm:text-[14px] px-2 py-1 rounded-4xl ${
+                className={`shrink-0 flex flex-row items-center gap-1 border-1 cursor-pointer bg-white text-black font-vazir text-[12px] sm:text-[14px] px-2 py-1 rounded-4xl ${
                   selectedOrder === "most discount"
                     ? "border-black border-2 font-bold"
                     : "border-gray-700"
@@ -163,7 +163,7 @@ export default function Products({
 
               <button
                 type="button"
-                className="lg:hidden shrink-0 flex flex-row items-center gap-1 cursor-pointer border-1 bg-white text-black font-vazir text-12px sm:text-[14px] px-2 py-1 rounded-4xl border-gray-700"
+                className="lg:hidden shrink-0 flex flex-row items-center gap-1 cursor-pointer border-1 bg-white text-black font-vazir text-[12px] sm:text-[14px] px-2 py-1 rounded-4xl border-gray-700"
                 onClick={() => setToggleFilters(true)}
               >
                 فیلترها

@@ -22,7 +22,7 @@ const Hero = () => {
             ))}
           </Slider>
         </div>
-        <div className="lg:flex-1 flex flex-col items-center text-right mt-10 lg:mt-25 lg:ml-5">
+        <div className="lg:flex-1 flex flex-col items-center text-center mt-10 lg:mt-25 lg:ml-5">
           <h1 className="font-vazir font-bold md:text-[60px] sm:text-[50px] text-[42px] leading-[100px]">
             <span className="">از تکنولوژی تا پوشاک</span>
             <br />

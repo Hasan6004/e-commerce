@@ -20,10 +20,10 @@ const KpiCard = ({ title, value, change, iconSrc }: KpiCardProps) => {
             alt="sales icon"
             className="mb-4"
           />
-          <h4 className="font-vazir text-[16px] font-bold text-gray-700">
+          <h4 className="font-vazir text-[14px] sm:text-[16px] font-bold text-gray-700">
             {title}
           </h4>
-          <p className="font-vazir text-[20px] text-gray-900 font-semibold mt-1">
+          <p className="font-vazir text-[16px] sm:text-[20px] text-gray-900 font-semibold mt-1">
             {formatPrice(value)}
           </p>
           <p

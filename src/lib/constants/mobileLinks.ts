@@ -2,7 +2,6 @@ import { IoPersonOutline } from "react-icons/io5";
 import { GrCart } from "react-icons/gr";
 import { MdOutlineCategory } from "react-icons/md";
 import { MdOutlineHome } from "react-icons/md";
-import { MdOutlineLibraryBooks } from "react-icons/md";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 type navLinks = {

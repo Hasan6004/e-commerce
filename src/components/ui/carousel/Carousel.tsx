@@ -59,7 +59,7 @@ export default function ProductCarousel() {
                   height={300}
                   src={p.imageSrc}
                   alt={p.name}
-                  className="w-full h-60 object-cover rounded-md"
+                  className="w-full h-[200px] object-cover rounded-md"
                 />
               </div>
               <h3 className="mt-2 font-medium px-2 text-right font-vazir">

@@ -3,7 +3,7 @@ import React from "react";
 const Banner = () => {
   return (
     <>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center mt-10">
         <div className="w-full h-[120px] bg-yellow-100 flex items-center justify-center rounded-2xl mx-10 cursor-pointer">
           <p className="hidden sm:block font-vazir text-[26px] font-bold">
             ارسال رایگان برای خریدهای بالای ۷۰۰ هزار تومان

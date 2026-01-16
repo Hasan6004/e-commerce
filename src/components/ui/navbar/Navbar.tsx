@@ -206,37 +206,44 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
-        {mobileLinks.map((item) => {
-          const isActive =
-            isAuthenticated && item.name === "account"
-              ? pathname === "/account"
-              : pathname === item.href;
-          if (item.name === "adminPanel" && user?.role !== "admin") return null;
-          return (
-            <ul key={item.href} className="cursor-pointer flex-1">
-              <Link
-                href={
-                  item.name === "account" && isAuthenticated
-                    ? "/account"
-                    : item.href
-                }
-                className={`font-vazir ${isActive && "font-bold"} text-[14px]
+      {!pathname?.startsWith("/adminPanel") && (
+        <>
+          <div className="w-[100%] mt-4 flex justify-center items-center h-[1px] bg-[#c8c8c8]" />
+          <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex flex-row justify-between items-center bg-white p-1">
+            {mobileLinks.map((item) => {
+              const isActive =
+                isAuthenticated && item.name === "account"
+                  ? pathname === "/account"
+                  : pathname === item.href;
+              if (item.name === "adminPanel" && user?.role !== "admin")
+                return null;
+              return (
+                <ul key={item.href} className="cursor-pointer flex-1">
+                  <Link
+                    href={
+                      item.name === "account" && isAuthenticated
+                        ? "/account"
+                        : item.href
+                    }
+                    className={`font-vazir ${
+                      isActive && "font-bold"
+                    } text-[14px]
                    flex flex-col items-center justify-center gap-1
                   `}
-              >
-                <item.icon
-                  className={`cursor-pointer ${
-                    isActive ? "text-black" : "text-[#8c8c8c]"
-                  } w-[25px] h-[25px]`}
-                />
-                {item.text}
-              </Link>
-            </ul>
-          );
-        })}
-      </div>
+                  >
+                    <item.icon
+                      className={`cursor-pointer ${
+                        isActive ? "text-black" : "text-[#8c8c8c]"
+                      } w-[25px] h-[25px]`}
+                    />
+                    {item.text}
+                  </Link>
+                </ul>
+              );
+            })}
+          </div>
+        </>
+      )}
     </nav>
   );
 };
