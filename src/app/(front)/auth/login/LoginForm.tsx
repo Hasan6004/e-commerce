@@ -31,16 +31,18 @@ const LoginForm = () => {
 
   const onSubmitLogin = async (data: LoginFormData) => {
     try {
-      await dispatch(
-        loginUser({ email: data.email, password: data.password })
+      const res = await dispatch(
+        loginUser({ email: data.email, password: data.password }),
       ).unwrap();
       toast.success("خوش آمدید", {
         className: "font-vazir text-[16px] mt-10",
       });
       const redirect = searchParams.get("redirect") || "/";
       router.push(redirect);
-    } catch (error) {
-      handleError(error);
+    } catch (error: any) {
+      toast.error(error, {
+        className: "font-vazir text-[16px] mt-10",
+      });
     }
   };
   return (

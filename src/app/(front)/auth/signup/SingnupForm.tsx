@@ -13,7 +13,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { MdOutlineArrowForward } from "react-icons/md";
-import { createUser } from "@/lib/api/users";
+// import { createUser } from "@/lib/api/users";
+import axios from "axios";
 
 const SingnupForm = () => {
   const [step, setStep] = useState<1 | 2>(1);
@@ -38,20 +39,24 @@ const SingnupForm = () => {
   };
 
   const handleSignupSubmit = async (data: FormData) => {
-    const newUser = await createUser({
+    const newUser = {
       firstName: data.firstname,
       lastName: data.lastname,
       email: data.email,
       password: data.password,
       role: "customer",
-    });
-    if (newUser) {
-      toast.success("ثبت نام با موفقیت انجام شد", {
-        className: "font-vazir text-[16px] mt-10",
-      });
+    };
+    try {
+      const res = await axios.post("/api/auth/signup", newUser);
+
+      if (res.data.success) {
+        toast.success("ثبت نام با موفقیت انجام شد", {
+          className: "font-vazir text-[16px] mt-10",
+        });
+      }
       router.push("/auth/login");
-    } else {
-      toast.error("خطا در ثبت نام", {
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error || "خطا در ثبت نام", {
         className: "font-vazir text-[16px] mt-10",
       });
     }

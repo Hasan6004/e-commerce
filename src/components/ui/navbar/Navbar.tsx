@@ -15,18 +15,23 @@ import Image from "next/image";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/lib/redux/slices/userSlice";
+// import { logout } from "@/lib/redux/slices/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { loading, error, user, isAuthenticated } = useSelector(
-    (state: RootState) => state.user
+  const { loading, error, user, isAuthenticated, authchecked } = useSelector(
+    (state: RootState) => state.user,
   );
 
   const [toggleAccountLinks, setToggleAccountLinks] = useState<boolean>(false);
   const accountLinksRef = useRef<HTMLDivElement>(null);
 
   const cartItemsNumber = useSelector((state: RootState) => state.cart);
+
+  useEffect(() => {
+    console.log("Auth checked:", authchecked);
+  }, [authchecked]);
 
   // Close accountLinks when clicking outside
   useEffect(() => {
@@ -63,12 +68,14 @@ const Navbar = () => {
             ref={accountLinksRef}
             className="lg:ml-5 ml-3 hidden md:block relative"
           >
-            {isAuthenticated ? (
+            {!authchecked ? null : isAuthenticated ? (
               <>
-                <IoPersonOutline
-                  className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]"
-                  onClick={() => setToggleAccountLinks(!toggleAccountLinks)}
-                />
+                <button disabled={!authchecked}>
+                  <IoPersonOutline
+                    className="cursor-pointer text-[#8c8c8c] hover:text-black lg:w-[25px] lg:h-[25px] w-[20px] h-[20px]"
+                    onClick={() => setToggleAccountLinks(!toggleAccountLinks)}
+                  />
+                </button>
                 {toggleAccountLinks && (
                   <div className="absolute md:top-full md:left-0 bg-white shadow-md border rounded-md min-w-[180px] z-50">
                     <ul className="flex flex-col">

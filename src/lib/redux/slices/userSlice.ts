@@ -1,23 +1,23 @@
-import { getUserByEmailPassword } from "@/lib/api/auth";
 import api from "@/lib/api/axios";
 import { User } from "@/types/user";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import axios from "axios";
 
 interface UserLoginFields extends User {}
 
 export interface userState {
   isAuthenticated: boolean;
+  authchecked: boolean;
   user: UserLoginFields | null;
-  // token: string | null;
   error: string | null;
   loading: boolean;
 }
 
 const initialState: userState = {
   isAuthenticated: false,
+  authchecked: false,
   user: null,
-  // token: null,
   loading: false,
   error: null,
 };
@@ -30,18 +30,34 @@ export const loginUser = createAsyncThunk<
   "user/login",
   async (
     credentials: { email: string; password: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
-    const user = await getUserByEmailPassword(
-      credentials.email,
-      credentials.password
-    );
-    if (!user) {
-      return rejectWithValue("ایمیل یا رمز عبور اشتباه است");
+    try {
+      const res = await axios.post("/api/auth/login", credentials, {
+        withCredentials: true,
+      });
+      return res.data.user;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.error || "خطا در ورود به حساب",
+      );
     }
-    return user;
-  }
+  },
 );
+
+export const fetchUser = createAsyncThunk<
+  User | null,
+  void,
+  { rejectValue: string }
+>("user/me", async (_, { rejectWithValue }) => {
+  const res = await axios.get("/api/auth/me", {
+    withCredentials: true,
+  });
+  if (!res.data.user) {
+    return rejectWithValue("خطا در بارگذاری اطلاعات کاربر");
+  }
+  return res.data.user;
+});
 
 export const updateUser = createAsyncThunk<
   User,
@@ -66,26 +82,34 @@ export const updateUser = createAsyncThunk<
   return updatedUser.data;
 });
 
+export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
+  "user/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.get("/api/auth/logout");
+    } catch (error: any) {
+      rejectWithValue("خطا در خروج از حساب");
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      // state.token = null;
-      state.loading = false;
-      state.error = null;
-    },
+    // logout: (state) => {
+    //   state.isAuthenticated = false;
+    //   state.authchecked = false;
+    //   state.user = null;
+    //   state.loading = false;
+    //   state.error = null;
+    // },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.isAuthenticated = false;
-        state.user = null;
-        // state.token = null;
         state.loading = true;
-        state.error = null;
       })
       .addCase(
         loginUser.fulfilled,
@@ -93,12 +117,14 @@ const userSlice = createSlice({
           state.loading = false;
           state.error = null;
           state.isAuthenticated = true;
+          state.authchecked = true;
           state.user = action.payload;
-        }
+        },
       )
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
+        state.authchecked = true;
         state.user = null;
         state.error = action.payload ?? "خطای ناشناخته";
       })
@@ -115,10 +141,47 @@ const userSlice = createSlice({
         state.loading = false;
         state.error =
           action.payload ?? "خطای ناشناخته در به‌روزرسانی اطلاعات کاربر";
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchUser.fulfilled,
+        (state, action: PayloadAction<User | null>) => {
+          state.loading = false;
+          state.error = null;
+          console.log(action.payload);
+          state.isAuthenticated = action.payload ? true : false;
+          state.authchecked = true;
+          state.user = action.payload;
+        },
+      )
+      .addCase(fetchUser.rejected, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.authchecked = true;
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.authchecked = true;
+        state.error = null;
+        state.user = null;
+        state.loading = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.error = action.payload ?? "خطای ناشناخته";
+        state.loading = false;
       });
   },
 });
 
 export default userSlice.reducer;
 
-export const { logout } = userSlice.actions;
+// export const { logout } = userSlice.actions;
