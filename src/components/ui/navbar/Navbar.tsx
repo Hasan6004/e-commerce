@@ -29,10 +29,6 @@ const Navbar = () => {
 
   const cartItemsNumber = useSelector((state: RootState) => state.cart);
 
-  useEffect(() => {
-    console.log("Auth checked:", authchecked);
-  }, [authchecked]);
-
   // Close accountLinks when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

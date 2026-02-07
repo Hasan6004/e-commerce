@@ -1,18 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { userState } from "./userSlice";
-import api from "@/lib/api/axios";
-
-interface favoriteItem {
-  productId: number;
-  userId: number;
-  id: number;
-}
+import axios from "axios";
+import { productType } from "@/types/poductType";
 
 interface favoriteState {
   loading: boolean;
   error: string | null;
-  favorites: favoriteItem[] | null;
+  favorites: productType[] | null;
 }
 
 const initialState: favoriteState = {
@@ -22,43 +15,46 @@ const initialState: favoriteState = {
 };
 
 export const addFavorite = createAsyncThunk<
-  favoriteItem,
-  Omit<favoriteItem, "id">,
+  productType,
+  { productId: number },
   { rejectValue: string }
->("favorite/add", async (newFavorite, { getState, rejectWithValue }) => {
-  const userId = (getState() as { user: userState }).user.user?.id;
-  if (!userId) {
-    console.log("HEREEEEeeee");
-    return rejectWithValue("لطفا ابتدا وارد شوید");
+>("favorite/add", async (newFavorite, { rejectWithValue }) => {
+  try {
+    const res = await axios.post("/api/favorites", newFavorite, {
+      withCredentials: true,
+    });
+    return res.data.favorite;
+  } catch (error) {
+    return rejectWithValue("خطا در افزودن به علاقه‌مندی‌ها");
   }
-  const newFavoriteResponse = await api.post<favoriteItem>(
-    "/favorites",
-    newFavorite
-  );
-  if (!newFavoriteResponse) {
-    return rejectWithValue("خطا در اضافه کردن به علاقه‌مندی‌ها");
-  }
-  return newFavoriteResponse.data;
 });
 
 export const fetchFavorites = createAsyncThunk<
-  favoriteItem[],
+  productType[],
   void,
-  { state: RootState; rejectValue: string }
->("favorite/fetch", async (_, { getState, rejectWithValue }) => {
+  { rejectValue: string }
+>("favorite/fetch", async (_, { rejectWithValue }) => {
   try {
-    const state = getState();
-    const userId = state.user.user?.id;
+    const res = await axios.get("/api/favorites", {
+      withCredentials: true,
+    });
+    // Format the response to match the productType structure expected by the UI
+    const favoritesUI = res?.data?.favorites?.map((p: any) => ({
+      id: p["product"].id,
+      brand: p["product"].brand,
+      name: p["product"].name,
+      price: p["product"].price,
+      discountPercent: p["product"].discount_percent,
+      inStock: p["product"].in_stock,
+      color: p["product"].color,
+      category: p["product"].category,
+      href: p["product"].href,
+      imageSrc: p["product"].image_src,
+      description: p["product"].description,
+      specs: p["product"].specs,
+    }));
 
-    if (!userId) {
-      return rejectWithValue("لطفا ابتدا وارد شوید");
-    }
-
-    const response = await api.get<favoriteItem[]>(
-      `/favorites?userId=${userId}`
-    );
-
-    return response.data;
+    return favoritesUI;
   } catch (err) {
     return rejectWithValue("خطا در بارگذاری محصولات موردعلاقه");
   }
@@ -67,48 +63,23 @@ export const fetchFavorites = createAsyncThunk<
 export const removeFromFavorites = createAsyncThunk<
   number,
   number,
-  { state: RootState; rejectValue: string }
->("favorite/delete", async (id, { getState, rejectWithValue }) => {
+  { rejectValue: string }
+>("favorite/delete", async (id, { rejectWithValue }) => {
   try {
-    const userId = (getState() as { user: userState }).user.user?.id;
-
-    if (!userId) {
-      return rejectWithValue("لطفا ابتدا وارد شوید");
-    }
-
-    const getItem = await api.get(
-      `/favorites?userId=${userId}&productId=${id}`
-    );
-
-    if (getItem.data.length > 0) {
-      const favoriteId = getItem.data[0].id;
-      await api.delete(`/favorites/${favoriteId}`);
-      return favoriteId;
-    }
+    const res = await axios.delete("/api/favorites", {
+      data: { productId: id },
+      withCredentials: true,
+    });
+    return res.data.productId;
   } catch (error) {
     rejectWithValue("خطا در حذف محصول موردنظر");
   }
 });
 
-// const initialState: number[] = [];
-
 const favoriteSlice = createSlice({
   name: "favorite",
   initialState,
-  reducers: {
-    //   addToFavorites: (state, action) => {
-    //     state.push(action.payload);
-    //     toast.success("محصول موردنظر به لیست علاقه‌مندی‌ها افزوده شد", {
-    //       className: "font-vazir text-[14px] mt-10",
-    //     });
-    //   },
-    //   removeFromFavorites: (state, action) => {
-    //     toast.success("محصول موردنظر از لیست علاقه‌مندی‌ها حذف شد", {
-    //       className: "font-vazir text-[14px] mt-10",
-    //     });
-    //     return state.filter((item) => item !== action.payload);
-    //   },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(addFavorite.pending, (state) => {
@@ -121,15 +92,13 @@ const favoriteSlice = createSlice({
       })
       .addCase(
         addFavorite.fulfilled,
-        (state, action: PayloadAction<favoriteItem>) => {
+        (state, action: PayloadAction<productType>) => {
           state.error = null;
           state.loading = false;
-          if (state.favorites) {
-            state.favorites?.push(action.payload);
-          } else {
-            state.favorites = [action.payload];
-          }
-        }
+          state.favorites = state.favorites
+            ? [...state.favorites, action.payload]
+            : [action.payload];
+        },
       )
       .addCase(fetchFavorites.pending, (state) => {
         state.loading = true;
@@ -141,11 +110,11 @@ const favoriteSlice = createSlice({
       })
       .addCase(
         fetchFavorites.fulfilled,
-        (state, action: PayloadAction<favoriteItem[]>) => {
+        (state, action: PayloadAction<productType[]>) => {
           state.loading = false;
           state.error = null;
           state.favorites = action.payload;
-        }
+        },
       )
       .addCase(removeFromFavorites.pending, (state) => {
         state.loading = true;
@@ -161,13 +130,11 @@ const favoriteSlice = createSlice({
           state.loading = false;
           state.error = null;
           state.favorites = state.favorites!?.filter(
-            (item) => item.id !== action.payload
+            (item) => item.id !== action.payload,
           );
-        }
+        },
       );
   },
 });
-
-// export const { addToFavorites, removeFromFavorites } = favoriteSlice.actions;
 
 export default favoriteSlice.reducer;

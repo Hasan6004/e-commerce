@@ -96,15 +96,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    // logout: (state) => {
-    //   state.isAuthenticated = false;
-    //   state.authchecked = false;
-    //   state.user = null;
-    //   state.loading = false;
-    //   state.error = null;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
@@ -151,7 +143,6 @@ const userSlice = createSlice({
         (state, action: PayloadAction<User | null>) => {
           state.loading = false;
           state.error = null;
-          console.log(action.payload);
           state.isAuthenticated = action.payload ? true : false;
           state.authchecked = true;
           state.user = action.payload;
@@ -183,5 +174,3 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-
-// export const { logout } = userSlice.actions;

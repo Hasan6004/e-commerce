@@ -13,7 +13,7 @@ import { MdOutlineArrowForward } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { AppDispatch } from "@/lib/redux/store";
-import { handleError } from "@/lib/utils/handleError";
+import { fetchFavorites } from "@/lib/redux/slices/favoriteSlice";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -31,9 +31,12 @@ const LoginForm = () => {
 
   const onSubmitLogin = async (data: LoginFormData) => {
     try {
-      const res = await dispatch(
+      await dispatch(
         loginUser({ email: data.email, password: data.password }),
       ).unwrap();
+
+      await dispatch(fetchFavorites()).unwrap();
+
       toast.success("خوش آمدید", {
         className: "font-vazir text-[16px] mt-10",
       });

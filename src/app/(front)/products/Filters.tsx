@@ -38,14 +38,14 @@ const baseFilters: FiltersType = {
 };
 
 const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
-  const [toggleBrand, setToggleBrand] = useState<boolean>(false);
   const [filtersState, setFiltersState] = useState<FiltersType>(baseFilters);
+  const [toggleBrand, setToggleBrand] = useState<boolean>(false);
   const [togglePriceRange, setTogglePriceRange] = useState<boolean>(false);
   const [minPrice, setMinPrice] = useState<string>("");
   const [maxPrice, setMaxPrice] = useState<string>("");
   const [priceRangeError, setPriceRangeError] = useState<boolean>(false);
   const [toggleFilter, setToggleFilter] = useState<ToggleCategoryFilterState>(
-    {}
+    {},
   );
 
   const isFiltersActive =
@@ -55,7 +55,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
     filtersState.priceRange[1] < 1000000000 ||
     (filtersState.categoryFilters &&
       Object.values(filtersState.categoryFilters).some(
-        (item) => item.length > 0
+        (item) => item.length > 0,
       ));
 
   const handleBrandChange = (brand: string): void => {
@@ -92,7 +92,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
 
   const handleCategoryFilterChange = (
     filterSource: string,
-    filterValue: string | number
+    filterValue: string | number,
   ): void => {
     if (filtersState?.categoryFilters![filterSource].includes(filterValue)) {
       setFiltersState({
@@ -100,7 +100,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
         categoryFilters: {
           ...filtersState.categoryFilters,
           [filterSource]: filtersState.categoryFilters![filterSource].filter(
-            (item: string | number) => item !== filterValue
+            (item: string | number) => item !== filterValue,
           ),
         },
       });
@@ -159,7 +159,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
       if (selectedBrands.length > 0) {
         selectedBrands.forEach((brand) => {
           brandFilteredProducts = allProducts!?.filter(
-            (item) => item.brand === brand
+            (item) => item.brand === brand,
           );
         });
       } else {
@@ -171,7 +171,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
     const applyInStockFilter = (inStock: boolean): void => {
       if (inStock) {
         inStockFilteredProducts = brandFilteredProducts!?.filter(
-          (item) => item.inStock > 0
+          (item) => item.inStock > 0,
         );
       } else {
         inStockFilteredProducts = brandFilteredProducts;
@@ -185,7 +185,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
           +item.price - (+item.price * item.discountPercent) / 100 <
             priceRange[1] &&
           +item.price - (+item.price * item.discountPercent) / 100 >
-            priceRange[0]
+            priceRange[0],
       );
     };
 
@@ -207,9 +207,9 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
           filtersState.categoryFilters![filter].forEach(
             (item: string | number) => {
               finalFilteredProducts = globalFilteredProducts?.filter(
-                (product) => product[filter as keyof productType] === item
+                (product) => product[filter as keyof productType] === item,
               );
-            }
+            },
           );
         }
       });
@@ -235,7 +235,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
       let initialToggleFilter = {};
       Object.keys(categorySchemas[enCategory]).forEach(
         (item) =>
-          (initialToggleFilter = { ...initialToggleFilter, [item]: false })
+          (initialToggleFilter = { ...initialToggleFilter, [item]: false }),
       );
       setToggleFilter(initialToggleFilter);
     }
@@ -410,7 +410,7 @@ const Filters = ({ updateProducts, enCategory, products }: FiltersProps) => {
                           </div>
                         </Fragment>
                       );
-                    }
+                    },
                   )}
                 </div>
               )}

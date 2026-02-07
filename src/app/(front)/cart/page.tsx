@@ -2,7 +2,7 @@
 
 import { RootState } from "@/lib/redux/store";
 import Image from "next/image";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
@@ -64,7 +64,7 @@ const Cart = () => {
                             <p>
                               <span className="sm:text-[14px] text-[12px] font-vazir">{`(${item.discountPercent}%) `}</span>
                               {formatPrice(
-                                (item.price * item.discountPercent) / 100
+                                (item.price * item.discountPercent) / 100,
                               )}
                             </p>
                             <span>:تخفیف</span>
@@ -126,7 +126,7 @@ const Cart = () => {
                           prices: sumOfPrices,
                           discounts: sumOfDiscounts,
                           quantities: sumOfQuantities,
-                        })
+                        }),
                       )
                     }
                   >
@@ -145,7 +145,7 @@ const Cart = () => {
                         prices: sumOfPrices,
                         discounts: sumOfDiscounts,
                         quantities: sumOfQuantities,
-                      })
+                      }),
                     )
                   }
                 >

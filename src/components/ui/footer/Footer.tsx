@@ -20,7 +20,7 @@ const Footer = () => {
     pathname?.startsWith("/checkout") ||
     pathname?.startsWith("/orders") ||
     pathname?.startsWith("/paymentConfirm") ||
-    pathname?.startsWith("/bookmarks") ||
+    pathname?.startsWith("/favorites") ||
     pathname?.startsWith("/adminPanel");
 
   return hideFooter ? null : (

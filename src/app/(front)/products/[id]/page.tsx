@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, use, useEffect } from "react";
+import { Fragment, use } from "react";
 import products from "@/lib/constants/products";
 import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
@@ -40,18 +40,18 @@ export default function ProductDetailsPage({ params }: Props) {
   const product = products.find((item) => item.id === productId);
 
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
-    "description"
+    "description",
   );
-
-  const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
   const cartItems = useSelector((state: RootState) => state.cart);
 
-  const { user } = useSelector((state: RootState) => state.user);
-
   const { favorites } = useSelector((state: RootState) => state.favorite);
+
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(
+    !!favorites?.some((item) => item.id === +productId),
+  );
 
   const handleAddToCart = () => {
     // first we should check if its in the user cart beforehand. if it exists then we only need to increment its quantity
@@ -67,7 +67,7 @@ export default function ProductDetailsPage({ params }: Props) {
           quantity: 1,
           image: product?.imageSrc,
           discountPercent: product?.discountPercent,
-        })
+        }),
       );
     }
     toast.success("محصول مورد نظر به سبد خرید اضافه شد", {
@@ -80,9 +80,12 @@ export default function ProductDetailsPage({ params }: Props) {
       await dispatch(
         addFavorite({
           productId,
-          userId: +user!?.id,
-        })
+        }),
       ).unwrap();
+      setIsInFavorites(true);
+      toast.success("محصول مورد نظر به علاقه‌مندی‌ها اضافه شد", {
+        className: "font-vazir text-[14px] sm:text-[16px] mt-10",
+      });
     } catch (error) {
       handleError(error);
     }
@@ -91,20 +94,16 @@ export default function ProductDetailsPage({ params }: Props) {
   const handleRemoveFromFavorite = async (id: number) => {
     try {
       await dispatch(removeFromFavorites(id)).unwrap();
+      setIsInFavorites(false);
+      toast.success("محصول مورد نظر از علاقه‌مندی‌ها حذف شد", {
+        className: "font-vazir text-[14px] sm:text-[16px] mt-10",
+      });
     } catch (error) {
       handleError(error);
     }
   };
 
   if (!product) return <p>محصولی یافت نشد</p>;
-
-  useEffect(() => {
-    setIsInFavorites(
-      !!favorites?.some(
-        (item) => item.productId === +productId && item.userId === +user!.id
-      )
-    );
-  }, [favorites]);
 
   return (
     <div className="px-10 w-full py-10">
@@ -221,7 +220,8 @@ export default function ProductDetailsPage({ params }: Props) {
                           <p className="font-vazir text-black text-[18px] sm:text-[20px] font-bold">
                             {formatPrice(
                               +product.price -
-                                (+product.price * product.discountPercent) / 100
+                                (+product.price * product.discountPercent) /
+                                  100,
                             )}
                             <span className="mr-2">تومان</span>
                           </p>

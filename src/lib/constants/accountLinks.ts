@@ -24,8 +24,8 @@ export const accountLinks: accountLinksType[] = [
     icon: MdOutlineAddLocationAlt,
   },
   {
-    href: "/bookmarks",
-    name: "bookmarks",
+    href: "/favorites",
+    name: "favorites",
     text: "لیست علاقه‌مندی",
     icon: MdOutlineBookmarkBorder,
   },
