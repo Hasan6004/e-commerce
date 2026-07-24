@@ -1,9 +1,12 @@
-import products from "@/lib/constants/products";
+// import products from "@/lib/constants/products";
 import { createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { productType } from "@/types/poductType";
 
 interface cartItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;
@@ -28,9 +31,14 @@ const cartSlice = createSlice({
     },
     incrementQuantity: (state, action) => {
       // Checking inStock
-      const inStock = products.find(
-        (item) => item.id === action.payload
-      )?.inStock;
+
+      // const inStock = products.find(
+      //   (item) => item.id === action.payload,
+      // )?.inStock;
+
+      const inStock = useSelector(
+        (state: RootState) => state.product.products,
+      ).find((item: productType) => item.id === action.payload)?.inStock;
 
       const product = state.find((item) => item.id === action.payload);
       if (product && inStock) {

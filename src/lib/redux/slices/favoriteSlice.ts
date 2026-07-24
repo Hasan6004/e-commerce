@@ -41,6 +41,7 @@ export const fetchFavorites = createAsyncThunk<
     // Format the response to match the productType structure expected by the UI
     const favoritesUI = res?.data?.favorites?.map((p: any) => ({
       id: p["product"].id,
+      slug: p["product"].slug,
       brand: p["product"].brand,
       name: p["product"].name,
       price: p["product"].price,
@@ -52,6 +53,9 @@ export const fetchFavorites = createAsyncThunk<
       imageSrc: p["product"].image_src,
       description: p["product"].description,
       specs: p["product"].specs,
+      isActive: p["product"].is_active,
+      createdAt: p["product"].created_at,
+      updatedAt: p["product"].updated_at,
     }));
 
     return favoritesUI;
@@ -62,7 +66,7 @@ export const fetchFavorites = createAsyncThunk<
 
 export const removeFromFavorites = createAsyncThunk<
   number,
-  number,
+  string,
   { rejectValue: string }
 >("favorite/delete", async (id, { rejectWithValue }) => {
   try {
@@ -129,9 +133,9 @@ const favoriteSlice = createSlice({
         (state, action: PayloadAction<number>) => {
           state.loading = false;
           state.error = null;
-          state.favorites = state.favorites!?.filter(
-            (item) => item.id !== action.payload,
-          );
+          // state.favorites = state.favorites!?.filter(
+          //   (item) => item.id !== action.payload,
+          // );
         },
       );
   },

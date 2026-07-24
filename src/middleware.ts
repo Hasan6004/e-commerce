@@ -1,29 +1,60 @@
+// middleware.ts
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose"; // ✅ Edge-compatible
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token");
+const protectedRoutes = [
+  "/adminPanel",
+  "/profile",
+  "/orders",
+  "/checkout",
+  "/addresses",
+  "/paymentConfirm",
+  "/account",
+  "/favorites",
+];
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+const authRoutes = ["/auth/login", "/auth/signup"];
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const token = request.cookies.get("token")?.value;
+
+  let user = null;
+
+  if (token) {
+    try {
+      const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!);
+      const { payload } = await jwtVerify(token, secret);
+      user = payload; // ✅ Decoded JWT payload
+    } catch (err) {
+      console.error("JWT VERIFY ERROR:", err);
+      user = null;
+    }
   }
 
-  try {
-    jwt.verify(token.value, process.env.TOKEN_SECRET!);
-    return NextResponse.next();
-  } catch (error) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  /* =========================
+     PROTECTED ROUTES
+  ========================== */
+  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+    if (!user) {
+      const loginUrl = new URL("/auth/login", request.url);
+      loginUrl.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
   }
+
+  /* =========================
+     AUTH ROUTES
+  ========================== */
+  if (authRoutes.includes(pathname)) {
+    if (user) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/adminPanel/:path*",
-    "/profile",
-    "/orders",
-    "/checkout",
-    "/addresses",
-    "/paymentConfirm",
-    "/account",
-  ],
+  matcher: ["/((?!api|_next|static|favicon.ico|.*\\.).*)"],
 };

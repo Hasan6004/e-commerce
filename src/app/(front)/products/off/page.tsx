@@ -1,9 +1,9 @@
 import { handleError } from "@/lib/utils/handleError";
-import ProductsUI from "./ProductsUI";
 import { getProducts } from "@/lib/products/product";
+import ProductsUI from "../ProductsUI";
 
 export default async function Products() {
-  const response = await getProducts();
+  const response = await getProducts({ list: "discounted" });
 
   if (response.error) {
     handleError(response.error);

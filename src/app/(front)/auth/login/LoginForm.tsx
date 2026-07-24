@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { loginUser } from "@/lib/redux/slices/userSlice";
+import { fetchUser, loginUser } from "@/lib/redux/slices/userSlice";
 import { AppDispatch } from "@/lib/redux/store";
 import { fetchFavorites } from "@/lib/redux/slices/favoriteSlice";
 
@@ -35,7 +35,7 @@ const LoginForm = () => {
         loginUser({ email: data.email, password: data.password }),
       ).unwrap();
 
-      await dispatch(fetchFavorites()).unwrap();
+      await dispatch(fetchUser()).unwrap();
 
       toast.success("خوش آمدید", {
         className: "font-vazir text-[16px] mt-10",

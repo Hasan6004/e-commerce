@@ -1,7 +1,6 @@
 "use client";
 
-import { Fragment, use } from "react";
-import products from "@/lib/constants/products";
+import { Fragment } from "react";
 import formatPrice from "@/lib/utils/formatPrice";
 import { baseButton } from "@/styles/buttonStyles";
 import Image from "next/image";
@@ -17,10 +16,7 @@ import {
   removeFromFavorites,
 } from "@/lib/redux/slices/favoriteSlice";
 import { handleError } from "@/lib/utils/handleError";
-
-type Props = {
-  params: Promise<{ id: string }>;
-};
+import { productType } from "@/types/poductType";
 
 const colorClasses: Record<string, string> = {
   black: "bg-black",
@@ -33,12 +29,12 @@ const colorClasses: Record<string, string> = {
   silver: "bg-gray-700",
 };
 
-export default function ProductDetailsPage({ params }: Props) {
-  const { id } = use(params);
-  const productId = Number(id);
-
-  const product = products.find((item) => item.id === productId);
-
+export default function ProductDetailsPage({
+  product,
+}: {
+  product: productType;
+}) {
+  console.log("product", product);
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
     "description",
   );
@@ -50,7 +46,7 @@ export default function ProductDetailsPage({ params }: Props) {
   const { favorites } = useSelector((state: RootState) => state.favorite);
 
   const [isInFavorites, setIsInFavorites] = useState<boolean>(
-    !!favorites?.some((item) => item.id === +productId),
+    !!favorites?.some((item) => item.id === product?.id),
   );
 
   const handleAddToCart = () => {
@@ -91,7 +87,7 @@ export default function ProductDetailsPage({ params }: Props) {
     }
   };
 
-  const handleRemoveFromFavorite = async (id: number) => {
+  const handleRemoveFromFavorite = async (id: string) => {
     try {
       await dispatch(removeFromFavorites(id)).unwrap();
       setIsInFavorites(false);
@@ -246,7 +242,7 @@ export default function ProductDetailsPage({ params }: Props) {
                     <button
                       type="button"
                       className="cursor-pointer"
-                      onClick={() => handleRemoveFromFavorite(+productId)}
+                      onClick={() => handleRemoveFromFavorite(product?.id)}
                     >
                       <MdOutlineBookmarkRemove size={32} />
                     </button>

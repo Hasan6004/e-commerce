@@ -1,26 +1,38 @@
 import { categories } from "@/lib/constants/categories";
-import Products from "../../products/page";
+import { getProducts } from "@/lib/products/product";
+import ProductsUI from "../../products/ProductsUI";
+import { handleError } from "@/lib/utils/handleError";
 
 type Props = {
   params: { category: string };
 };
 
-const CategoryPage = async ({ params }: Props) => {
+const page = async ({ params }: Props) => {
   const { category } = await params;
+
   const persianNameCategory = categories.find(
-    (item) => item.enCategory === category
+    (item) => item.enCategory === category,
   );
+
+  const response = await getProducts({
+    category: persianNameCategory?.category,
+  });
+
+  if (response.error) {
+    handleError(response.error);
+    return (
+      <p className="text-center font-vazir text-[16px]">${response.error}</p>
+    );
+  }
+
   return (
     <>
       <h1 className="font-vazir text-[20px] font-bold text-center mt-5">
         دسته‌بندی:{persianNameCategory?.category}
       </h1>
-      <Products
-        category={persianNameCategory?.category}
-        enCategory={persianNameCategory?.enCategory}
-      />
+      <ProductsUI products={response.products!} />
     </>
   );
 };
 
-export default CategoryPage;
+export default page;

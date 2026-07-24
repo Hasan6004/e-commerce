@@ -1,18 +1,29 @@
 export type productType = {
-  id: number | string;
-  brand: string;
+  id: string;
+
+  slug: string;
+
+  brand: string | null;
   name: string;
-  price: string | number;
+
+  price: number;
   discountPercent: number;
   inStock: number;
+
   color?: string;
+
   category: string;
+
   href: string;
+
   imageSrc: string;
-  ram?: string;
-  cpu?: string;
+
   description: string;
-  specs?: {
-    [key: string]: string;
-  };
+
+  specs?: Record<string, string>;
+
+  isActive: boolean;
+
+  createdAt?: string;
+  updatedAt?: string;
 };

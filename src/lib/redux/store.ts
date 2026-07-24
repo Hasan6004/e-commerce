@@ -5,6 +5,7 @@ import addressReducer from "./slices/addressSlice";
 import orderReducer from "./slices/orderSlice";
 import favoriteReducer from "./slices/favoriteSlice";
 import checkoutReducer from "./slices/checkoutSlice";
+import productsReducer from "./slices/productSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     order: orderReducer,
     favorite: favoriteReducer,
     checkout: checkoutReducer,
+    product: productsReducer,
   },
 });
 

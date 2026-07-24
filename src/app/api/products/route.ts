@@ -1,14 +1,14 @@
-import { supabaseServer } from "@/lib/supabase/server";
+import { getProducts } from "@/lib/products/product";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const { data, error } = await supabaseServer.from("products").select("*");
+  const response = await getProducts();
 
-  if (error)
+  if (response.error)
     return NextResponse.json(
       { error: "خطا در دریافت محصولات" },
       { status: 500 },
     );
 
-  return NextResponse.json({ products: data });
+  return NextResponse.json({ products: response.products });
 }

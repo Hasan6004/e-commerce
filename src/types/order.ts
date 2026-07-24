@@ -1,11 +1,11 @@
 interface OrderItem {
-  productId: number;
+  productId: string;
   quantity: number;
 }
 
 export interface Order {
-  orderId: number;
-  userId: number;
+  orderId: string;
+  userId: string;
   products: OrderItem[];
   totalPrice: number;
   status: "در حال پردازش" | "لغو شده" | "تحویل داده شده" | "حمل شده";

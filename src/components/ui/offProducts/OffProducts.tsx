@@ -1,7 +1,19 @@
-import React from "react";
+import { getProducts } from "@/lib/products/product";
 import ProductCarousel from "../carousel/Carousel";
+import { handleError } from "@/lib/utils/handleError";
 
-const OffProducts = () => {
+const OffProducts = async () => {
+  const response = await getProducts({ list: "discounted", limit: 7 });
+
+  if (response.error) {
+    handleError(response.error);
+    return (
+      <p className="text-center font-vazir text-[16px] mt-10">
+        {response.error}
+      </p>
+    );
+  }
+
   return (
     <>
       <div className="mt-10">
@@ -9,7 +21,7 @@ const OffProducts = () => {
           تخفیف‌دارها
         </h2>
         <div className="w-full flex items-center justify-center p-10 pt-0">
-          <ProductCarousel />
+          <ProductCarousel products={response.products!} />
         </div>
       </div>
     </>
