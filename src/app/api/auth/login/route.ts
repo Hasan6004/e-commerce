@@ -1,21 +1,14 @@
-import { supabaseServer } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { userLogin } from "@/lib/login/queries";
 
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
     const { email, password } = reqBody;
 
-    console.log(reqBody);
-
-    //   Check if user exists
-    const { data, error } = await supabaseServer
-      .from("users")
-      .select("id, password_hash, role, first_name, last_name")
-      .eq("email", email)
-      .single();
+    const { data, error } = await userLogin(email);
 
     if (error) {
       return NextResponse.json(
@@ -25,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     //   Check if password is correct
-    const validPassword = await bcrypt.compare(password, data.password_hash);
+    const validPassword = await bcrypt.compare(password, data!.password_hash);
 
     if (!validPassword) {
       return NextResponse.json(
@@ -36,8 +29,8 @@ export async function POST(req: NextRequest) {
 
     //   Create token
     const tokenData = {
-      id: data.id,
-      role: data.role,
+      id: data!.id,
+      role: data!.role,
     };
 
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
@@ -48,11 +41,11 @@ export async function POST(req: NextRequest) {
       message: "ورود با موفقیت انجام شد",
       success: true,
       user: {
-        id: data.id,
-        firstName: data.first_name,
-        lastName: data.last_name,
+        id: data!.id,
+        firstName: data!.first_name,
+        lastName: data!.last_name,
         email: email,
-        role: data.role,
+        role: data!.role,
       },
     });
 

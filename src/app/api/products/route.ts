@@ -1,14 +1,14 @@
-import { getProducts } from "@/lib/products/product";
-import { NextResponse } from "next/server";
+// import { getProducts } from "@/lib/products/queries";
+// import { NextResponse } from "next/server";
 
-export async function GET() {
-  const response = await getProducts();
+// export async function GET() {
+//   const response = await getProducts();
 
-  if (response.error)
-    return NextResponse.json(
-      { error: "خطا در دریافت محصولات" },
-      { status: 500 },
-    );
+//   if (response.error)
+//     return NextResponse.json(
+//       { error: "خطا در دریافت محصولات" },
+//       { status: 500 },
+//     );
 
-  return NextResponse.json({ products: response.products });
-}
+//   return NextResponse.json({ products: response.products });
+// }

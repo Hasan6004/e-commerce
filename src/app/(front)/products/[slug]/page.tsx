@@ -1,4 +1,4 @@
-import { getProduct } from "@/lib/products/product";
+import { getProduct } from "@/lib/products/queries";
 import ProductDetailsPage from "./ProductDetails";
 
 type Props = {
@@ -10,7 +10,12 @@ export default async function Page({ params }: Props) {
 
   const response = await getProduct(slug);
 
-  if (!response.product) return <p>${response.error}</p>;
+  if (!response.product) return <p>{response.error}</p>;
 
-  return <ProductDetailsPage product={response.product} />;
+  return (
+    <ProductDetailsPage
+      product={response.product}
+      isFavorite={response.isFavorite}
+    />
+  );
 }

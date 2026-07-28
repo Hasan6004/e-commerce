@@ -1,4 +1,4 @@
-import { getProducts } from "@/lib/products/product";
+import { getProducts } from "@/lib/products/queries";
 import ProductCarousel from "../carousel/Carousel";
 import { handleError } from "@/lib/utils/handleError";
 

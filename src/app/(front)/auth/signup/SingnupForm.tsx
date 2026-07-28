@@ -13,7 +13,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { MdOutlineArrowForward } from "react-icons/md";
-// import { createUser } from "@/lib/api/users";
 import axios from "axios";
 
 const SingnupForm = () => {

@@ -13,7 +13,6 @@ import { MdOutlineArrowForward } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { fetchUser, loginUser } from "@/lib/redux/slices/userSlice";
 import { AppDispatch } from "@/lib/redux/store";
-import { fetchFavorites } from "@/lib/redux/slices/favoriteSlice";
 
 const LoginForm = () => {
   const router = useRouter();

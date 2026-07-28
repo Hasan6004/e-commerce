@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Order } from "@/types/order";
 import { RootState } from "../store";
 import { userState } from "./userSlice";
-import api from "@/lib/api/axios";
+import api from "@/lib/api/client";
 
 interface OrdersState {
   loading: boolean;
@@ -66,7 +66,7 @@ const orderSlice = createSlice({
           state.loading = false;
           state.error = null;
           state.orders = action.payload;
-        }
+        },
       )
       .addCase(fetchOrdersByUser.rejected, (state, action) => {
         state.loading = false;

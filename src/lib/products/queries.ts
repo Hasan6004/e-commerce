@@ -1,3 +1,4 @@
+import { isFavorite } from "../favorites.ts/queries";
 import { supabaseServer } from "../supabase/server";
 
 type ProductFilters = {
@@ -45,7 +46,13 @@ export async function getProduct(slug: string) {
     return { product: null, error: "خطا در دریافت محصول" };
   }
 
-  return { product: productMapper(data), error: null };
+  const isFavoriteResult = await isFavorite(data.id);
+
+  return {
+    product: productMapper(data),
+    isFavorite: isFavoriteResult,
+    error: null,
+  };
 }
 
 function productMapper(product: any) {

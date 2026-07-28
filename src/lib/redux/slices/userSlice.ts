@@ -1,4 +1,4 @@
-import api from "@/lib/api/axios";
+import api from "@/lib/api/client";
 import { User } from "@/types/user";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";

@@ -1,7 +1,7 @@
 "use client";
 
 import Pagination from "@/components/ui/pagination/Pagination";
-import api from "@/lib/api/axios";
+import api from "@/lib/api/client";
 import formatPrice from "@/lib/utils/formatPrice";
 import { handleError } from "@/lib/utils/handleError";
 import { Order } from "@/types/order";
@@ -44,7 +44,7 @@ const page = () => {
         : "";
 
       const response = await api.get(
-        `/orders?_page=${page}&_limit=${limit}${statusParam}${searchParam}${dateParam}`
+        `/orders?_page=${page}&_limit=${limit}${statusParam}${searchParam}${dateParam}`,
       );
 
       setOrders(response.data);

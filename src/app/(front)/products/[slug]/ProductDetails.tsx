@@ -11,12 +11,10 @@ import toast from "react-hot-toast";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 import { MdOutlineBookmarkRemove } from "react-icons/md";
-import {
-  addFavorite,
-  removeFromFavorites,
-} from "@/lib/redux/slices/favoriteSlice";
 import { handleError } from "@/lib/utils/handleError";
 import { productType } from "@/types/poductType";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const colorClasses: Record<string, string> = {
   black: "bg-black",
@@ -31,23 +29,22 @@ const colorClasses: Record<string, string> = {
 
 export default function ProductDetailsPage({
   product,
+  isFavorite,
 }: {
   product: productType;
+  isFavorite: boolean;
 }) {
-  console.log("product", product);
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
     "description",
   );
+
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
 
   const cartItems = useSelector((state: RootState) => state.cart);
 
-  const { favorites } = useSelector((state: RootState) => state.favorite);
-
-  const [isInFavorites, setIsInFavorites] = useState<boolean>(
-    !!favorites?.some((item) => item.id === product?.id),
-  );
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(isFavorite);
 
   const handleAddToCart = () => {
     // first we should check if its in the user cart beforehand. if it exists then we only need to increment its quantity
@@ -71,31 +68,54 @@ export default function ProductDetailsPage({
     });
   };
 
-  const handleAddToFavorite = async (productId: number) => {
+  const handleAddToFavorite = async (productId: string) => {
     try {
-      await dispatch(
-        addFavorite({
-          productId,
-        }),
-      ).unwrap();
+      const res = await axios.post(
+        "/api/favorites",
+        { productId },
+        {
+          withCredentials: true,
+        },
+      );
       setIsInFavorites(true);
       toast.success("محصول مورد نظر به علاقه‌مندی‌ها اضافه شد", {
         className: "font-vazir text-[14px] sm:text-[16px] mt-10",
       });
-    } catch (error) {
-      handleError(error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        toast.error("لطفا ابتدا وارد شوید", {
+          className: "font-vazir text-[16px] mt-10",
+        });
+        router.push(`/auth/login?redirect=/products/${product?.slug}`);
+      } else {
+        handleError(
+          error.response?.data?.error || "خطا در افزودن به علاقه‌مندی‌ها",
+        );
+      }
     }
   };
 
-  const handleRemoveFromFavorite = async (id: string) => {
+  const handleRemoveFromFavorite = async (productId: string) => {
     try {
-      await dispatch(removeFromFavorites(id)).unwrap();
+      const res = await axios.delete("/api/favorites", {
+        data: { productId },
+        withCredentials: true,
+      });
       setIsInFavorites(false);
       toast.success("محصول مورد نظر از علاقه‌مندی‌ها حذف شد", {
         className: "font-vazir text-[14px] sm:text-[16px] mt-10",
       });
-    } catch (error) {
-      handleError(error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        toast.error("لطفا ابتدا وارد شوید", {
+          className: "font-vazir text-[16px] mt-10",
+        });
+        router.push(`/auth/login?redirect=/products/${product?.slug}`);
+      } else {
+        handleError(
+          error.response?.data?.error || "خطا در حذف از علاقه‌مندی‌ها",
+        );
+      }
     }
   };
 
@@ -250,7 +270,7 @@ export default function ProductDetailsPage({
                     <button
                       type="button"
                       className="cursor-pointer"
-                      onClick={() => handleAddToFavorite(+product?.id)}
+                      onClick={() => handleAddToFavorite(product?.id)}
                     >
                       <MdOutlineBookmarkAdd size={32} />
                     </button>

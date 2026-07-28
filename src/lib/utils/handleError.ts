@@ -18,8 +18,12 @@ export const handleError = (error: any) => {
     toast.error(error.message, {
       className: "font-vazir text-[16px] mt-10",
     });
+  } else if (typeof error === "string") {
+    toast.error(error, {
+      className: "font-vazir text-[16px] mt-10",
+    });
   } else {
-    toast.error(error as string, {
+    toast.error("خطای ناشناخته", {
       className: "font-vazir text-[16px] mt-10",
     });
   }

@@ -1,5 +1,5 @@
 import { categories } from "@/lib/constants/categories";
-import { getProducts } from "@/lib/products/product";
+import { getProducts } from "@/lib/products/queries";
 import ProductsUI from "../../products/ProductsUI";
 import { handleError } from "@/lib/utils/handleError";
 

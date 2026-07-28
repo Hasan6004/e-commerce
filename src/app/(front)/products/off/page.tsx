@@ -1,5 +1,5 @@
 import { handleError } from "@/lib/utils/handleError";
-import { getProducts } from "@/lib/products/product";
+import { getProducts } from "@/lib/products/queries";
 import ProductsUI from "../ProductsUI";
 
 export default async function Products() {
